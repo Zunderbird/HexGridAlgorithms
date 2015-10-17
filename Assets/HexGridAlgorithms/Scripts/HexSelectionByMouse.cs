@@ -2,7 +2,7 @@
 
 namespace Assets.HexGridAlgorithms.Scripts
 {
-    public class HexSelection : MonoBehaviour
+    public class HexSelectionByMouse : MonoBehaviour
     {
         public Camera PlayerCamera;
 

@@ -5,23 +5,22 @@ namespace Assets.HexGridAlgorithms.Scripts
 {
     public class ScaleMapSlider : MonoBehaviour
     {
-        private Transform _mapTransform;
-        private Vector3 _initScale;
+        private float _initScale;
+
+        public Camera MapsCamera;
 
         void Start()
         {
+            _initScale = MapsCamera.orthographicSize;
+
             var input = gameObject.GetComponent<Slider>();
-            input.onValueChanged.AddListener(ScaleMap);
+            if (input != null)
+                input.onValueChanged.AddListener(ScaleMap);
         }
 
         public void ScaleMap(float scale)
         {
-            if (_mapTransform == null)
-            {
-                _mapTransform = GameObject.Find("Map").GetComponent<Transform>().transform;
-                _initScale = _mapTransform.localScale;
-            }
-            _mapTransform.localScale = (_initScale * scale);
+            MapsCamera.orthographicSize = _initScale/scale;
         }
     }
 

@@ -4,14 +4,14 @@ using UnityEngine.UI;
 
 namespace Assets.HexGridAlgorithms.Scripts
 {
-    public class InputFieldController : MonoBehaviour
+    public class CorrectionToInputField : MonoBehaviour
     {
         public int MaxNumber = 300;
 
         void Start()
         {
             var input = gameObject.GetComponent<InputField>();
-            input.onValueChange.AddListener(CheckInputSymbol);
+            if (input != null) input.onValueChange.AddListener(CheckInputSymbol);
         }
 
         void CheckInputSymbol(string arg)

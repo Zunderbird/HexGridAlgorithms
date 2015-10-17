@@ -8,10 +8,10 @@ namespace Assets.HexGridAlgorithms.Scripts
 
         void Update()
         {
-            if (MapCanvas != null && MapCanvas.GetComponent<HexSelection>() != null)
+            if (MapCanvas != null && MapCanvas.GetComponent<HexSelectionByMouse>() != null)
             {
-                var currentHex = MapCanvas.GetComponent<HexSelection>().CurrentHex;
-                var targetHex = MapCanvas.GetComponent<HexSelection>().TargetHex;
+                var currentHex = MapCanvas.GetComponent<HexSelectionByMouse>().CurrentHex;
+                var targetHex = MapCanvas.GetComponent<HexSelectionByMouse>().TargetHex;
 
                 if (currentHex && targetHex)
                 {

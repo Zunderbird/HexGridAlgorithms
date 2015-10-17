@@ -13,7 +13,7 @@ namespace Assets.HexGridAlgorithms.Scripts
             transform.GetChild(0).GetComponent<Text>().text = CurrentTerrainType.ToString();
 
             var input = gameObject.GetComponent<Button>();
-            input.onClick.AddListener(NextTerrainType);
+            if (input != null) input.onClick.AddListener(NextTerrainType);
         }
 
         public void NextTerrainType()

@@ -8,7 +8,8 @@ namespace Assets.HexGridAlgorithms.Scripts
     {
         public GameObject InputFieldWidth;
         public GameObject InputFieldHeight;
-        public GameObject ScaleSlider;
+
+        public int MaxNumber = 300;
 
         private GameObject _hexGrid;
 
@@ -20,18 +21,26 @@ namespace Assets.HexGridAlgorithms.Scripts
             gameObject.GetComponent<Button>().interactable = false;
 
             var input = gameObject.GetComponent<Button>();
-            input.onClick.AddListener(CreateGrid);
+            if (input != null) input.onClick.AddListener(CreateGrid);
 
             if (InputFieldWidth != null)
             {
                 var inputField = InputFieldWidth.GetComponent<InputField>();
-                inputField.onEndEdit.AddListener(SetWidth);
+                if (inputField != null)
+                {
+                    InputFieldWidth.AddComponent<CorrectionToInputField>();
+                    inputField.onValueChange.AddListener(SetWidth);
+                }
             }
 
             if (InputFieldHeight != null)
             {
                 var inputField = InputFieldHeight.GetComponent<InputField>();
-                inputField.onEndEdit.AddListener(SetHeight);
+                if (inputField != null)
+                {
+                    InputFieldHeight.AddComponent<CorrectionToInputField>();
+                    inputField.onValueChange.AddListener(SetHeight);                   
+                }
             }
         }
 
@@ -46,19 +55,37 @@ namespace Assets.HexGridAlgorithms.Scripts
 
         void SetWidth(string arg)
         {
-            _widthInHex = Convert.ToInt32(arg);
+            _widthInHex = CorrectInputFieldText(arg, InputFieldWidth);
             CheckForInteractable();
         }
 
         void SetHeight(string arg)
         {
-            _heightInHex = Convert.ToInt32(arg);
+            _heightInHex = CorrectInputFieldText(arg, InputFieldHeight);
             CheckForInteractable();
         }
 
         void CheckForInteractable()
         {
             gameObject.GetComponent<Button>().interactable = (_widthInHex > 0 && _heightInHex > 0);
+        }
+
+        int CorrectInputFieldText(string arg, GameObject inputField)
+        {
+            var number = 0;
+
+            if (arg.Length > 0)
+            {
+                var lastSymbol = arg[arg.Length - 1];
+
+                if (!lastSymbol.IsDigit() || Convert.ToInt32(arg) > MaxNumber)
+                {
+                    arg = arg.Remove(arg.Length - 1);
+                    inputField.GetComponent<InputField>().text = arg;  
+                }
+                number = (arg.Length > 0) ? Convert.ToInt32(arg):0;
+            }
+            return number;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Assets.HexGridAlgorithms.Scripts
 {
@@ -8,6 +7,12 @@ namespace Assets.HexGridAlgorithms.Scripts
         public Camera PlayerCamera;
 
         private Vector3 _mMouseButtonStartPos;
+        private float _initScale;
+
+        void Start()
+        {
+            _initScale = PlayerCamera.orthographicSize;
+        }
 
         void Update()
         {
@@ -21,7 +26,8 @@ namespace Assets.HexGridAlgorithms.Scripts
 
                 if (Input.GetMouseButton(1))
                 {
-                    PlayerCamera.transform.position += (_mMouseButtonStartPos - Input.mousePosition)/100;
+                    var correlation = _initScale/PlayerCamera.orthographicSize;
+                    PlayerCamera.transform.position += (_mMouseButtonStartPos - Input.mousePosition)/correlation/100;
                     _mMouseButtonStartPos = Input.mousePosition;
                 }
             }
