@@ -9,6 +9,8 @@ namespace Assets.HexGridAlgorithms.Scripts
         public GameObject InputFieldWidth;
         public GameObject InputFieldHeight;
 
+        public GameObject TerrainTypeButton;
+
         public int MaxNumber = 300;
 
         private GameObject _hexGrid;

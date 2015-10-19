@@ -13,10 +13,7 @@ namespace Assets.HexGridAlgorithms.Scripts
 
         void Start()
         {
-            _mLeftBorder = transform.position.x - GetComponent<RectTransform>().rect.width / 2;
-            _mRightBorder = transform.position.x + GetComponent<RectTransform>().rect.width / 2;
-            _mBottomBorder = transform.position.y - GetComponent<RectTransform>().rect.height / 2;
-            _mUpBorder = transform.position.y + GetComponent<RectTransform>().rect.height / 2;
+            InitComponents();
         }
 
         void Update()
@@ -28,6 +25,17 @@ namespace Assets.HexGridAlgorithms.Scripts
         {
             return (_mLeftBorder <= position.x && position.x <= _mRightBorder &&
                     _mBottomBorder <= position.y && position.y <= _mUpBorder);
+        }
+
+        public void InitComponents()
+        {
+            var position = transform.parent.position;
+            var rect = transform.parent.GetComponent<RectTransform>().rect;
+
+            _mLeftBorder = position.x - rect.width / 2;
+            _mRightBorder = position.x + rect.width / 2;
+            _mBottomBorder = position.y - rect.height / 2;
+            _mUpBorder = position.y + rect.height / 2;
         }
     }
 }

@@ -5,6 +5,13 @@ namespace Assets.HexGridAlgorithms
 {
     public static class HexGenerator
     {
+        public static Vector2 HexSize { get; private set; }
+
+        static HexGenerator()
+        {
+            HexSize = GetHexSize();
+        }
+
         public static GameObject MakeHex()
         {
 
@@ -86,6 +93,7 @@ namespace Assets.HexGridAlgorithms
             hex.AddComponent<MeshCollider>();
 
             var material = Object.Instantiate((Material)Resources.Load("Hex Material"));
+
             hex.GetComponent<Renderer>().material = material;
 
             hex.AddComponent<HexData>();
@@ -93,14 +101,7 @@ namespace Assets.HexGridAlgorithms
             return hex;
         }
 
-        static Vector3 GetVertexPos(float angle)
-        {
-            var rad = angle * Mathf.Deg2Rad;
-            var newPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
-            return newPos;
-        }
-
-        public static void SetHexInfo(int x, int y, Transform hex)
+        public static void SetHexInfo(int x, int y, Transform hex, TerrainTypes terrainType)
         {
             var newX = Mathf.CeilToInt(x - (y / 2));
             var newZ = -(newX + y);
@@ -109,7 +110,14 @@ namespace Assets.HexGridAlgorithms
             hex.name = ("(" + newX + ", " + y + ", " + newZ + ")");
         }
 
-        public static Vector2 GetHexSize()
+        private static Vector3 GetVertexPos(float angle)
+        {
+            var rad = angle * Mathf.Deg2Rad;
+            var newPos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad));
+            return newPos;
+        }
+
+        private static Vector2 GetHexSize()
         {
             var temp = MakeHex();
 
