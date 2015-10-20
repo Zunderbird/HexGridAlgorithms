@@ -1,8 +1,9 @@
 ﻿using System;
+using Assets.HexGridAlgorithms;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.HexGridAlgorithms.Scripts
+namespace Assets.Scripts.Buttons
 {
     public class CreateHexGridButton : MonoBehaviour
     {
@@ -23,7 +24,7 @@ namespace Assets.HexGridAlgorithms.Scripts
             gameObject.GetComponent<Button>().interactable = false;
 
             var input = gameObject.GetComponent<Button>();
-            if (input != null) input.onClick.AddListener(CreateGrid);
+            input.onClick.AddListener(CreateGrid);
 
             if (InputFieldWidth != null)
             {

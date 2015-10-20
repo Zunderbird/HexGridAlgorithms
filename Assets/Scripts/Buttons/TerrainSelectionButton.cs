@@ -1,8 +1,9 @@
 ﻿using System;
+using Assets.HexGridAlgorithms;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.HexGridAlgorithms.Scripts
+namespace Assets.Scripts.Buttons
 {
     public class TerrainSelectionButton : MonoBehaviour
     {
@@ -15,7 +16,7 @@ namespace Assets.HexGridAlgorithms.Scripts
             transform.GetChild(0).GetComponent<Text>().text = CurrentTerrainType.ToString();
 
             var input = gameObject.GetComponent<Button>();
-            if (input != null) input.onClick.AddListener(NextTerrainType);
+            input.onClick.AddListener(NextTerrainType);
         }
 
         public void NextTerrainType()

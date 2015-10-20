@@ -1,6 +1,13 @@
-﻿using UnityEngine;
+﻿// Attach this script to the GameObject like a Map. 
+// This GameObject must have a parent, parents borders will be testing on mouse position inside.
+// Ideally, parent should be a Canvas.
 
-namespace Assets.HexGridAlgorithms.Scripts
+// IsMousePosInsideCanvas - public member, which is used by some other scripts
+// InitComponents() - public method, used if changing parent in GameObject for recalculation borders.
+
+using UnityEngine;
+
+namespace Assets.Scripts.MapGame
 {
     public class ActionsOnlyInCanvas : MonoBehaviour
     {
@@ -11,12 +18,12 @@ namespace Assets.HexGridAlgorithms.Scripts
         private float _mUpBorder;
         private float _mBottomBorder;
 
-        void Start()
+        private void Start()
         {
             InitComponents();
         }
 
-        void Update()
+        private void Update()
         {
             IsMousePosInsideCanvas = IsInsideCanvas(Input.mousePosition);
         }

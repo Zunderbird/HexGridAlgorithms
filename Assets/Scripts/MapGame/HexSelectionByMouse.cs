@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.HexGridAlgorithms.Scripts
+namespace Assets.Scripts.MapGame
 {
     public class HexSelectionByMouse : MonoBehaviour
     {

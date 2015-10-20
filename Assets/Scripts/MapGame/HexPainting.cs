@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.HexGridAlgorithms;
+using UnityEngine;
 
-namespace Assets.HexGridAlgorithms.Scripts
+namespace Assets.Scripts.MapGame
 {
     public class HexPainting : MonoBehaviour
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.HexGridAlgorithms;
 
-namespace Assets.HexGridAlgorithms.Scripts
+namespace Assets.Scripts
 {
     public class CorrectionToInputField : MonoBehaviour
     {
@@ -11,7 +12,7 @@ namespace Assets.HexGridAlgorithms.Scripts
         void Start()
         {
             var input = gameObject.GetComponent<InputField>();
-            if (input != null) input.onValueChange.AddListener(CheckInputSymbol);
+            input.onValueChange.AddListener(CheckInputSymbol);
         }
 
         void CheckInputSymbol(string arg)
