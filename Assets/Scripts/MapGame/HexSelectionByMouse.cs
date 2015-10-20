@@ -13,6 +13,8 @@ namespace Assets.Scripts.MapGame
         public Transform CurrentHex { get; private set; }
         public Transform TargetHex { get; private set; }
 
+        public bool IsHexStaySelected;
+
         void Update()
         {
             if (GetComponent<ActionsOnlyInCanvas>() == null ||

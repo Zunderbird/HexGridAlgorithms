@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.HexGridAlgorithms;
+using Assets.Scripts.InputFields;
 using UnityEngine;
 using UnityEngine.UI;
 

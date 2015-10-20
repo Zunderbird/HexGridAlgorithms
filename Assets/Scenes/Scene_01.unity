@@ -579,7 +579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfa843871f893348905c9838d587e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapCanvas: {fileID: 1745003089}
 --- !u!1 &500362535
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,6 +2125,7 @@ GameObject:
   - 114: {fileID: 1745003094}
   - 114: {fileID: 1745003092}
   - 114: {fileID: 1745003091}
+  - 114: {fileID: 1745003095}
   - 114: {fileID: 1745003090}
   m_Layer: 5
   m_Name: Map
@@ -2142,13 +2142,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745003089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e3d00019ccfc624bad8f0743767f400, type: 3}
+  m_Script: {fileID: 11500000, guid: 511134419302e1d4bba6eeb9a901e620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 520483340}
-  SelectedHexColor: {r: 0, g: 0, b: 1, a: 1}
-  NextHexColor: {r: 0, g: 1, b: 0, a: .392156869}
-  DefaultHexColor: {r: 1, g: 1, b: 1, a: 1}
+  SelectedHexColor: {r: .5, g: .5, b: .5, a: 1}
 --- !u!114 &1745003091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2201,6 +2199,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747343b1c324f504f9a14b571ba66393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1745003095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1745003089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8db275085e0493b419a0d8a441e5b829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerCamera: {fileID: 520483340}
+  TargetHexColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1758561950
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,9 @@
-﻿// Attach this script to UI.Slider
+﻿// Attach this script to UnityEngine.UI.Slider
 // Script provides oppotunity to scale camera with help of slider and should receive a Camera as parametr.
 
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Sliders
 {
     public class ScaleCameraSlider : MonoBehaviour
     {
@@ -16,7 +15,7 @@ namespace Assets.Scripts
         {
             _initScale = MapsCamera.orthographicSize;
 
-            var input = gameObject.GetComponent<Slider>();
+            var input = gameObject.GetComponent<UnityEngine.UI.Slider>();
             input.onValueChanged.AddListener(ScaleMap);
         }
 

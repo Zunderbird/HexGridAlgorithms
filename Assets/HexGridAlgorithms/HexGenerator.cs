@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Assets.Scripts;
+using Assets.Scripts.MapGame;
 
 namespace Assets.HexGridAlgorithms
 {

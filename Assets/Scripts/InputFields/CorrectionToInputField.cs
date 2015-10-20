@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.HexGridAlgorithms;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.InputFields
 {
     public class CorrectionToInputField : MonoBehaviour
     {
