@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.HexGridAlgorithms
 {
@@ -12,6 +13,13 @@ namespace Assets.HexGridAlgorithms
         public static Vector3 ToVector3(this Vector3D vector)
         {
             return new Vector3(vector.X, vector.Y, vector.Z);
+        }
+
+        public static Vector3D ToHexCoord(this Vector3D vector)
+        {
+            var newX = (int)Math.Ceiling(vector.X - ((double)vector.Y / 2));
+            var newZ = -(newX + vector.Y);
+            return new Vector3D(newX, vector.Y, newZ);
         }
 
         public static bool IsDigit(this char arg)

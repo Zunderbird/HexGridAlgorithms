@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.HexGridAlgorithms;
+using UnityEngine;
 using Assets.MVC.Controllers;
 
 namespace Assets.MVC
@@ -10,6 +11,8 @@ namespace Assets.MVC
 
         void Start()
         {
+            TerrainTextures.LoadTextures();
+
             _controller = new Controller();
 
             _controller.ShowView();

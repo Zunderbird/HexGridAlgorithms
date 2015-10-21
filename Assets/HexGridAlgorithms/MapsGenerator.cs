@@ -26,7 +26,7 @@ namespace Assets.HexGridAlgorithms
                     var hex = HexGenerator.MakeHex().transform;
 
                     hex.GetComponent<Renderer>().material.mainTexture = TerrainTextures.GetTexture(MainTerrainType);
-                    HexGenerator.SetHexInfo(x, y, hex, MainTerrainType);
+                    HexGenerator.SetHexInfo(x, y, hex);
 
                     var posY = y * (extent.y * 1.5f);
                     var posX = x * (extent.x * 2f);

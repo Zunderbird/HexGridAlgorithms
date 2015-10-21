@@ -31,37 +31,15 @@ namespace Assets.HexGridAlgorithms
             //***********************************************************
             //										Build Triangles
             //***********************************************************
-            var triangles = new int[18];
-
-            //Top
-            triangles[0] = 0;
-            triangles[1] = 2;
-            triangles[2] = 1;
-
-            //Bottom
-            triangles[3] = 0;
-            triangles[4] = 3;
-            triangles[5] = 2;
-
-            //Bottom Left
-            triangles[6] = 0;
-            triangles[7] = 4;
-            triangles[8] = 3;
-
-            //Bottom Right
-            triangles[9] = 0;
-            triangles[10] = 5;
-            triangles[11] = 4;
-
-            //Top Right
-            triangles[12] = 0;
-            triangles[13] = 6;
-            triangles[14] = 5;
-
-            //Top Left
-            triangles[15] = 0;
-            triangles[16] = 1;
-            triangles[17] = 6;
+            var triangles = new int[]
+            {
+                0, 2, 1, //Top
+                0, 3, 2, //Bottom
+                0, 4, 3, //Bottom Left
+                0, 5, 4, //Bottom Right
+                0, 6, 5, //Top Right
+                0, 1, 6  //Top Left
+            };          
 
             //***********************************************************
             //										Set UV's
@@ -95,13 +73,12 @@ namespace Assets.HexGridAlgorithms
             var material = Object.Instantiate((Material)Resources.Load("Hex Material"));
 
             hex.GetComponent<Renderer>().material = material;
-
             hex.AddComponent<HexData>();
 
             return hex;
         }
 
-        public static void SetHexInfo(int x, int y, Transform hex, TerrainTypes terrainType)
+        public static void SetHexInfo(int x, int y, Transform hex)
         {
             var newX = Mathf.CeilToInt(x - (y / 2));
             var newZ = -(newX + y);
