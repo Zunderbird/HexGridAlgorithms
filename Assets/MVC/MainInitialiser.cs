@@ -14,8 +14,6 @@ namespace Assets.MVC
             TerrainTextures.LoadTextures();
 
             _controller = new Controller();
-
-            _controller.ShowView();
         }
 
     }

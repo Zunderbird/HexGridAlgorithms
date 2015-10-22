@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Assets.HexGridAlgorithms
 {
     public struct Vector3D
@@ -100,6 +99,11 @@ namespace Assets.HexGridAlgorithms
         public override int GetHashCode()
         {
             return X ^ Y ^ Z;
+        }
+
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ", " + Z + ")";
         }
     }
 }

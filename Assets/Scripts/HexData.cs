@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.MapGame
+namespace Assets.Scripts
 {
     public class HexData : MonoBehaviour
     {

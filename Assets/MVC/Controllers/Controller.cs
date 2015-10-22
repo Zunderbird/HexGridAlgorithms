@@ -1,7 +1,7 @@
 ﻿using Assets.MVC.Models;
 using Assets.MVC.Views;
+using Assets.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.MVC.Controllers
 {
@@ -17,6 +17,7 @@ namespace Assets.MVC.Controllers
 
             _model = new Model();
 
+            //Views
             _mainGui.CreateHexMapButton.onClick.AddListener(_model.CreateHexMap);
             _mainGui.TerrainTypeButton.onClick.AddListener(_model.SetNextTerrainType);
             _mainGui.CentreMapButton.onClick.AddListener(_model.FindMapsCentreCoords);
@@ -24,13 +25,11 @@ namespace Assets.MVC.Controllers
             _mainGui.MapWidthInputField.onValueChange.AddListener(_model.SetWidthInHex);
             _mainGui.MapHeightInputField.onValueChange.AddListener(_model.SetHeightInHex);
 
-            //_mainGui.CreateHexMapButton.GetComponent<Button>().onClick.AddListener(_model.CreateHexMap);
-            //_mainGui.TerrainTypeButton.GetComponent<Button>().onClick.AddListener(_model.SetNextTerrainType);
-            //_mainGui.CentreMapButton.GetComponent<Button>().onClick.AddListener(_model.FindMapsCentreCoords);
+            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().HexSelected += (args) => _model.SelectHex(args.HexCoord);
+            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().HexHitted += (args) => _model.HitHex(args.HexCoord);
+            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().NoHexHitted += (sender, args) => _model.NoHittedHex();
 
-            //_mainGui.MapWidthInputField.GetComponent<InputField>().onValueChange.AddListener(_model.SetWidthInHex);
-            //_mainGui.MapHeightInputField.GetComponent<InputField>().onValueChange.AddListener(_model.SetHeightInHex);
-
+            //Models
             _model.HexCreated += (args) => _mainGui.OnHexCreated(args.HexCoord, args.HexType);
             _model.MapsCentreCoordsFound += (args) => _mainGui.OnMapsCentreCoordsFound(args.HexCoord);
 
@@ -42,10 +41,14 @@ namespace Assets.MVC.Controllers
             _model.MapCreated += (sender, args) => _mainGui.OnMapCreated();
             _model.CreationMapsAdmissible += (sender, args) => _mainGui.OnCreationMapsAdmissible(true);
             _model.CreationMapsInadmissible += (sender, args) => _mainGui.OnCreationMapsAdmissible(false);
-        }
 
-        public void ShowView()
-        {          
+            _model.IlluminateCurrentHex += (sender, args) => _mainGui.OnIlluminateCurrentHex();
+            _model.IlluminateTargetHex += (sender, args) => _mainGui.OnIlluminateTargerHex();
+            _model.SkipTargetHexIllumination += (sender, args) => _mainGui.OnSkipTargetHexIllumination();
+            _model.SkipCurrentHexIllumination += (sender, args) => _mainGui.OnSkipCurrentHexIllumination();
+
+            _model.PaintHex += args => _mainGui.OnPaintHex(args.HexType);
+            _model.UpdateDistance += (args) => _mainGui.OnUpdateDistance(args.Text);
         }
     }
 }

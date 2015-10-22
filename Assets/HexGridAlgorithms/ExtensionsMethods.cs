@@ -26,5 +26,27 @@ namespace Assets.HexGridAlgorithms
         {
             return ('0' <= arg && arg <= '9');
         }
+
+        public static int ConvertToIntByLastSymbol(this string arg)
+        {
+            return arg.ConvertToIntByLastSymbol(int.MaxValue);
+        }
+
+        public static int ConvertToIntByLastSymbol(this string arg, int maxSizeNumber)
+        {
+            var number = 0;
+
+            if (arg.Length > 0)
+            {
+                var lastSymbol = arg[arg.Length - 1];
+
+                if (!lastSymbol.IsDigit() || Convert.ToInt32(arg) > maxSizeNumber)
+                {
+                    arg = arg.Remove(arg.Length - 1);
+                }
+                number = (arg.Length > 0) ? Convert.ToInt32(arg) : 0;
+            }
+            return number;
+        }
     }
 }

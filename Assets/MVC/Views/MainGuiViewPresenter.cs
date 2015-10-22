@@ -1,6 +1,5 @@
-﻿
-using Assets.HexGridAlgorithms;
-using Assets.Scripts.MapGame;
+﻿using Assets.HexGridAlgorithms;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,45 +8,41 @@ namespace Assets.MVC.Views
     class MainGuiViewPresenter : MonoBehaviour
     {
         public Canvas FullScreenCanvas;
-        public Canvas MedievalScreenCanvas;
-     
+        public Canvas MedievalScreenCanvas;    
         public GameObject Panel;
-
         public Button CreateHexMapButton;
         public Button TerrainTypeButton;
         public Button CentreMapButton;
         public Button FullScreenButton;
-
         public InputField MapWidthInputField;
         public InputField MapHeightInputField;
-
         public Text DistanceText;
-
         public Slider ScaleMapSlider;
-
         public GameObject HexMap;
-
         public Camera MapsCamera;
 
         private float _initScale;
-
         private Transform _currentCanvas;
+
+        private readonly Color _targetHexColor = Color.gray / 2;
+        private readonly Color _currentHexColor = Color.cyan / 2;
+
+        private Transform _currentHex;
+        private Transform _targetHex;
 
         private void Start ()
         {
             CreateHexMapButton.interactable = false;
             CentreMapButton.interactable = false;
-            //CreateHexMapButton.GetComponent<Button>().interactable = false;
-            //CentreMapButton.GetComponent<Button>().interactable = false;
 
             FullScreenButton.onClick.AddListener(ChangeGameWindow);
             ScaleMapSlider.onValueChanged.AddListener(ScaleCameraSize);
-            //FullScreenButton.GetComponent<Button>().onClick.AddListener(ChangeGameWindow);
-            //ScaleMapSlider.GetComponent<Slider>().onValueChanged.AddListener(ScaleCameraSize);
 
             _initScale = MapsCamera.orthographicSize;
 
             _currentCanvas = MedievalScreenCanvas.transform;
+
+            TerrainTypeButton.transform.GetChild(0).GetComponent<Text>().text = TerrainTypes.Plain.ToString();
         }
 
         public void ChangeGameWindow()
@@ -79,12 +74,7 @@ namespace Assets.MVC.Views
             hex.GetComponent<Renderer>().material.mainTexture = TerrainTextures.GetTexture(hexType);
             HexGenerator.SetHexInfo(hexCoord.X, hexCoord.Y, hex);
 
-            var posY = hexCoord.Y * (HexGenerator.HexSize.y * 1.5f);
-            var posX = hexCoord.X * (HexGenerator.HexSize.x * 2f);
-
-            posX += (hexCoord.Y % 2 == 0) ? HexGenerator.HexSize.x : 0;
-
-            hex.position = new Vector3(posX, posY);
+            hex.position = HexGenerator.CorrelateCoordWithMap(hexCoord);
             hex.parent = HexMap.transform;
         }
 
@@ -95,13 +85,7 @@ namespace Assets.MVC.Views
 
         public void OnMapsCentreCoordsFound(Vector3D hexCoord)
         {
-            var posY = hexCoord.Y * (HexGenerator.HexSize.y * 1.5f);
-            var posX = hexCoord.X * (HexGenerator.HexSize.x * 2f);
-
-            posX += (hexCoord.Y % 2 == 0) ? HexGenerator.HexSize.x : 0;
-            Debug.Log(HexMap.transform.parent.position);
-            MapsCamera.transform.position = new Vector3(posX, posY, MapsCamera.transform.position.z);
-
+            MapsCamera.transform.position = HexGenerator.CorrelateCoordWithMap(hexCoord, new Vector3(0, 0, MapsCamera.transform.position.z));
         }
 
         public void OnWidthCorrected(int width)
@@ -130,6 +114,39 @@ namespace Assets.MVC.Views
         public void OnCreationMapsAdmissible(bool mapCreationAvailable)
         {
             CreateHexMapButton.GetComponent<Button>().interactable = mapCreationAvailable;
+        }
+
+        public void OnIlluminateCurrentHex()
+        {
+            _currentHex = HexMap.GetComponent<MouseActionsCatcher>().CurrentHex;
+            _currentHex.GetComponent<Renderer>().material.color += _currentHexColor;
+        }
+
+        public void OnIlluminateTargerHex()
+        {
+            _targetHex = HexMap.GetComponent<MouseActionsCatcher>().CurrentHex;
+            _targetHex.GetComponent<Renderer>().material.color += _targetHexColor;
+        }
+
+        public void OnSkipTargetHexIllumination()
+        {
+            _targetHex.GetComponent<Renderer>().material.color -= _targetHexColor;
+        }
+
+        public void OnSkipCurrentHexIllumination()
+        {
+            _currentHex.GetComponent<Renderer>().material.color -= _currentHexColor;
+        }
+
+        public void OnPaintHex(TerrainTypes terrainType)
+        {
+            _currentHex = HexMap.GetComponent<MouseActionsCatcher>().CurrentHex;
+            _currentHex.GetComponent<Renderer>().material.mainTexture = TerrainTextures.GetTexture(terrainType);
+        }
+
+        public void OnUpdateDistance(string text)
+        {
+            DistanceText.text = text;
         }
     }
 }

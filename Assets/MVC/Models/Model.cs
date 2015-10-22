@@ -14,6 +14,7 @@ namespace Assets.MVC.Models
         public TerrainTypes CurrentTerrainType { get; set; }
 
         public delegate void HexEvent(HexEventArgs e);
+        public delegate void TextEvent(TextEventArgs text);
         public event HexEvent HexCreated;
         public event EventHandler DeleteHexMap;
         public event EventHandler MapCreated;
@@ -23,14 +24,23 @@ namespace Assets.MVC.Models
         public event EventHandler HeightCorrected;
         public event EventHandler CreationMapsAdmissible;
         public event EventHandler CreationMapsInadmissible;
+        public event EventHandler IlluminateTargetHex;
+        public event EventHandler IlluminateCurrentHex;
+        public event EventHandler SkipTargetHexIllumination;
+        public event EventHandler SkipCurrentHexIllumination;
+        public event HexEvent PaintHex;
+        public event TextEvent UpdateDistance;
 
-        private Vector3D _currentHex;
-        private Vector3D _targetHex;
+        private Vector3D ?_currentHex;
+        private Vector3D ?_targetHex;
 
         private Dictionary<Vector3D, Hex> _hexMap;
 
         public void CreateHexMap()
         {
+            _currentHex = null;
+            _targetHex = null;
+
             if (_hexMap != null && DeleteHexMap != null) DeleteHexMap(this, EventArgs.Empty);
 
             _hexMap = new Dictionary<Vector3D, Hex>();
@@ -69,7 +79,7 @@ namespace Assets.MVC.Models
 
         public void SetWidthInHex(string arg)
         {
-            MapWidthInHex = CorrectInputFieldLastSymbol(arg);
+            MapWidthInHex = arg.ConvertToIntByLastSymbol(MAX_SIZE_NUMBER);
             if (WidthCorrected != null) WidthCorrected(this, EventArgs.Empty);
 
             CheckForMapCreationAvailable();
@@ -77,10 +87,59 @@ namespace Assets.MVC.Models
 
         public void SetHeightInHex(string arg)
         {
-            MapHeightInHex = CorrectInputFieldLastSymbol(arg);
+            MapHeightInHex = arg.ConvertToIntByLastSymbol(MAX_SIZE_NUMBER);
             if (HeightCorrected != null) HeightCorrected(this, EventArgs.Empty);
 
             CheckForMapCreationAvailable();
+        }
+
+        public void SelectHex(Vector3D hexPosition)
+        {
+            if (_currentHex != hexPosition)
+            {
+                if (_currentHex != null)
+                    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(this, EventArgs.Empty);
+                if (IlluminateCurrentHex != null) IlluminateCurrentHex(this, EventArgs.Empty);
+
+                ChangeTerrainType(hexPosition);
+
+                _currentHex = hexPosition;
+                
+            }
+        }
+
+        public void HitHex(Vector3D hexPosition)
+        {
+            if (_targetHex != hexPosition)
+            {
+                if (_targetHex != null)
+                    if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, EventArgs.Empty);
+
+                _targetHex = hexPosition;
+                if (IlluminateTargetHex != null) IlluminateTargetHex(this, EventArgs.Empty);
+
+                if (_currentHex != null)
+                {                   
+                    if (UpdateDistance != null) UpdateDistance(new TextEventArgs(GenerateDistanceText()));
+                }
+
+            }
+        }
+
+        public void NoHittedHex()
+        {
+            if (_targetHex != null)
+                if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, EventArgs.Empty);
+            _targetHex = null;
+        }
+
+        public void ChangeTerrainType(Vector3D hexPosition)
+        {
+            if (_hexMap[hexPosition].Type != CurrentTerrainType)
+            {
+                if (PaintHex != null) PaintHex(new HexEventArgs(CurrentTerrainType));
+                _hexMap[hexPosition].Type = CurrentTerrainType;
+            }
         }
 
         private void CheckForMapCreationAvailable()
@@ -92,21 +151,12 @@ namespace Assets.MVC.Models
             else if (CreationMapsInadmissible != null) CreationMapsInadmissible(this, EventArgs.Empty);
         }
 
-        private int CorrectInputFieldLastSymbol(string arg)
+        private string GenerateDistanceText()
         {
-            var number = 0;
+            var moveDistance = HexAlgorithms.CalculateDistance(_currentHex.Value, _targetHex.Value);
 
-            if (arg.Length > 0)
-            {
-                var lastSymbol = arg[arg.Length - 1];
-
-                if (!lastSymbol.IsDigit() || Convert.ToInt32(arg) > MAX_SIZE_NUMBER)
-                {
-                    arg = arg.Remove(arg.Length - 1);
-                }
-                number = (arg.Length > 0) ? Convert.ToInt32(arg) : 0;
-            }
-            return number;
+            return "Current Hex : " + _currentHex + "\nTarget Hex : "
+                + _targetHex + "\nDistance : " + moveDistance;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Assets.HexGridAlgorithms
 {
-    public struct Hex
+    public class Hex
     {
         public TerrainTypes Type { get; set; }
 

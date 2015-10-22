@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
-using Assets.Scripts.MapGame;
+using Assets.Scripts;
 
 namespace Assets.HexGridAlgorithms
 {
     public static class HexGenerator
     {
         public static Vector2 HexSize { get; private set; }
+        public static Vector2 DistanceBetweenHex { get; set; }
 
         static HexGenerator()
         {
             HexSize = GetHexSize();
+            DistanceBetweenHex = new Vector2(2f, 1.5f);
         }
 
         public static GameObject MakeHex()
         {
-
             var mesh = new Mesh();
 
             var vertices = new Vector3[7];
@@ -47,13 +48,13 @@ namespace Assets.HexGridAlgorithms
             var uv = new Vector2[7];
 
             // Center
-            uv[0] = new Vector2(.5f, .5f);
-            uv[1] = new Vector2(1f, .5f); // Top Left
-            uv[2] = new Vector2(.75f, .935f); // Top Right
-            uv[3] = new Vector2(.25f, 0.935f); // Bottom Right
+            uv[0] = new Vector2(0.5f, 0.5f);
+            uv[1] = new Vector2(1f, 0.5f); // Top Left
+            uv[2] = new Vector2(0.75f, 0.935f); // Top Right
+            uv[3] = new Vector2(0.25f, 0.935f); // Bottom Right
             uv[4] = new Vector2(0, 0.5f); // Bottom Left
-            uv[5] = new Vector2(.25f, .065f);  // Center Bottom Left
-            uv[6] = new Vector2(.75f, .065f); // Bottom Left
+            uv[5] = new Vector2(0.25f, 0.065f);  // Center Bottom Left
+            uv[6] = new Vector2(0.75f, 0.065f); // Bottom Left
 
             mesh.vertices = vertices;
             mesh.triangles = triangles;
@@ -87,6 +88,20 @@ namespace Assets.HexGridAlgorithms
             hex.name = ("(" + newX + ", " + y + ", " + newZ + ")");
         }
 
+        public static Vector3 CorrelateCoordWithMap(Vector3D hexCoord)
+        {
+            return CorrelateCoordWithMap(hexCoord, new Vector3(0, 0));
+        }
+
+        public static Vector3 CorrelateCoordWithMap(Vector3D hexCoord, Vector3 previousCoord)
+        {
+            var posY = hexCoord.Y * (HexSize.y * DistanceBetweenHex.y);
+            var posX = hexCoord.X * (HexSize.x * DistanceBetweenHex.x);
+
+            posX += (hexCoord.Y % 2 == 0) ? HexSize.x : 0;
+            return new Vector3(posX, posY) + previousCoord;
+        }
+
         private static Vector3 GetVertexPos(float angle)
         {
             var rad = angle * Mathf.Deg2Rad;
@@ -102,7 +117,6 @@ namespace Assets.HexGridAlgorithms
             var extent = new Vector2(bounds.extents.x, bounds.extents.y);
 
             Object.Destroy(temp);
-
             return extent;
         }
     }

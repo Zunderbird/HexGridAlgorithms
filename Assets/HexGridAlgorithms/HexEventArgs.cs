@@ -1,8 +1,6 @@
-﻿
-using System;
-using Assets.HexGridAlgorithms;
+﻿using System;
 
-namespace Assets.MVC.Models
+namespace Assets.HexGridAlgorithms
 {
     public class HexEventArgs: EventArgs
     {
@@ -14,10 +12,25 @@ namespace Assets.MVC.Models
             HexCoord = hexCoord;
         }
 
+        public HexEventArgs(TerrainTypes hexType)
+        {
+            HexType = hexType;
+        }
+
         public HexEventArgs(Vector3D hexCoord, TerrainTypes hexType)
         {
             HexCoord = hexCoord;
             HexType = hexType;
+        }
+    }
+
+    public class TextEventArgs : EventArgs
+    {
+        public string Text { get; set; }
+
+        public TextEventArgs(string text)
+        {
+            Text = text;
         }
     }
 

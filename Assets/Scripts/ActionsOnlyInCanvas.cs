@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-namespace Assets.Scripts.MapGame
+namespace Assets.Scripts
 {
     public class ActionsOnlyInCanvas : MonoBehaviour
     {

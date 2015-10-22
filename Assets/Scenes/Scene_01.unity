@@ -511,7 +511,6 @@ GameObject:
   - 224: {fileID: 358027254}
   - 222: {fileID: 358027256}
   - 114: {fileID: 358027255}
-  - 114: {fileID: 358027257}
   m_Layer: 5
   m_Name: Distance Text
   m_TagString: Untagged
@@ -568,18 +567,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 358027253}
---- !u!114 &358027257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 358027253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e4985ac7a98bf468c41d0ce4b9eeeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MapCanvas: {fileID: 1745003089}
 --- !u!1 &500362535
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,7 +816,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -931,7 +918,6 @@ GameObject:
   - 222: {fileID: 730049786}
   - 114: {fileID: 730049785}
   - 114: {fileID: 730049784}
-  - 114: {fileID: 730049787}
   m_Layer: 5
   m_Name: FullScreenButton
   m_TagString: Untagged
@@ -1025,21 +1011,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 730049782}
---- !u!114 &730049787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 730049782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee1d2a8f10491d64b81ea7be0fbb66f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FirstCanvas: {fileID: 520051469}
-  SecondCanvas: {fileID: 1048978310}
-  Map: {fileID: 1745003089}
-  TempGO: {fileID: 1622290858}
 --- !u!1 &799446715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,6 +1238,58 @@ RectTransform:
   m_AnchoredPosition: {x: .300003052, y: -1.74000549}
   m_SizeDelta: {x: -1.30000305, y: -1.15499878}
   m_Pivot: {x: .5, y: .5}
+--- !u!1 &893004225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 893004227}
+  - 114: {fileID: 893004226}
+  m_Layer: 0
+  m_Name: MainGUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &893004226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 893004225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c030580abb4a514ea4ccc1e29496134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FullScreenCanvas: {fileID: 1048978313}
+  MedievalScreenCanvas: {fileID: 520051472}
+  Panel: {fileID: 1622290858}
+  CreateHexMapButton: {fileID: 1926600624}
+  TerrainTypeButton: {fileID: 901329799}
+  CentreMapButton: {fileID: 1708748861}
+  FullScreenButton: {fileID: 730049784}
+  MapWidthInputField: {fileID: 206938177}
+  MapHeightInputField: {fileID: 106265005}
+  DistanceText: {fileID: 358027255}
+  ScaleMapSlider: {fileID: 1470764605}
+  HexMap: {fileID: 1745003089}
+  MapsCamera: {fileID: 520483340}
+--- !u!4 &893004227
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 893004225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 230.865585, y: 329.145813, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &901329796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,7 +1301,6 @@ GameObject:
   - 222: {fileID: 901329801}
   - 114: {fileID: 901329800}
   - 114: {fileID: 901329799}
-  - 114: {fileID: 901329798}
   m_Layer: 5
   m_Name: TerrainButton
   m_TagString: Untagged
@@ -1304,18 +1326,6 @@ RectTransform:
   m_AnchoredPosition: {x: .750010014, y: 1}
   m_SizeDelta: {x: -1.5, y: -1.69999695}
   m_Pivot: {x: .5, y: .5}
---- !u!114 &901329798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 901329796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 426630c90f519f94eb963f03d7d78ee5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentTerrainType: 0
 --- !u!114 &901329799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1710,7 +1720,6 @@ GameObject:
   m_Component:
   - 224: {fileID: 1470764604}
   - 114: {fileID: 1470764605}
-  - 114: {fileID: 1470764606}
   m_Layer: 5
   m_Name: ScaleSlider
   m_TagString: Untagged
@@ -1786,18 +1795,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1470764606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1470764603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e569b848d9c4f854183a2e69e52ef3e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MapsCamera: {fileID: 520483340}
 --- !u!1 &1567569718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,7 +2007,6 @@ GameObject:
   - 222: {fileID: 1708748863}
   - 114: {fileID: 1708748862}
   - 114: {fileID: 1708748861}
-  - 114: {fileID: 1708748864}
   m_Layer: 5
   m_Name: CentreMapButton
   m_TagString: Untagged
@@ -2104,17 +2100,45 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1708748859}
---- !u!114 &1708748864
+--- !u!1 &1712103157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1712103159}
+  - 114: {fileID: 1712103158}
+  m_Layer: 0
+  m_Name: MainInitialiser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1712103158
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1708748859}
+  m_GameObject: {fileID: 1712103157}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6030d7e953ea7f944baba01c0889065b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c8bd00003bd9884e82b614acbb18212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1712103159
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1712103157}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 230.865585, y: 329.145813, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
 --- !u!1 &1745003089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,7 +2147,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 1745003093}
-  - 114: {fileID: 1745003094}
   - 114: {fileID: 1745003092}
   - 114: {fileID: 1745003091}
   - 114: {fileID: 1745003090}
@@ -2142,14 +2165,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745003089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e3d00019ccfc624bad8f0743767f400, type: 3}
+  m_Script: {fileID: 11500000, guid: c486e32dc2b9a5f4289429cd5ff45c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 520483340}
-  SelectedHexColor: {r: 0, g: 0, b: 1, a: 1}
-  NextHexColor: {r: 0, g: 1, b: 0, a: 1}
-  DefaultHexColor: {r: 1, g: 1, b: 1, a: 1}
-  IsHexStaySelected: 0
 --- !u!114 &1745003091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2158,7 +2177,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745003089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d492420b985bcf949b2bf077f676c4f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 743af33fb915ade458473ef791ae64dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 520483340}
@@ -2170,10 +2189,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1745003089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cd50fb0718267d4f879dc599d4c6c39, type: 3}
+  m_Script: {fileID: 11500000, guid: d927516bc87592640b093d1f3fde90d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerCamera: {fileID: 520483340}
 --- !u!224 &1745003093
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2191,17 +2209,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: .5, y: .5}
---- !u!114 &1745003094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1745003089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 747343b1c324f504f9a14b571ba66393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1758561950
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,7 +2352,6 @@ GameObject:
   - 222: {fileID: 1926600626}
   - 114: {fileID: 1926600625}
   - 114: {fileID: 1926600624}
-  - 114: {fileID: 1926600627}
   m_Layer: 5
   m_Name: CreateHexGridButton
   m_TagString: Untagged
@@ -2439,21 +2445,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1926600622}
---- !u!114 &1926600627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1926600622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6825e2756c453f7498d9f5f71bba8214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InputFieldWidth: {fileID: 206938176}
-  InputFieldHeight: {fileID: 106265003}
-  TerrainTypeButton: {fileID: 901329796}
-  MaxNumber: 300
 --- !u!1 &2002382670
 GameObject:
   m_ObjectHideFlags: 0
