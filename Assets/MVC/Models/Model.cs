@@ -4,7 +4,7 @@ using Assets.HexGridAlgorithms;
 
 namespace Assets.MVC.Models
 {
-    class Model
+    class Model 
     {
         public int MapWidthInHex { get; set; }
         public int MapHeightInHex { get; set; }
@@ -12,29 +12,31 @@ namespace Assets.MVC.Models
         public const int MAX_SIZE_NUMBER = 300; 
 
         public TerrainTypes CurrentTerrainType { get; set; }
-
-        public delegate void HexEvent(HexEventArgs e);
-        public delegate void TextEvent(TextEventArgs text);
-        public event HexEvent HexCreated;
+  
         public event EventHandler DeleteHexMap;
         public event EventHandler MapCreated;
         public event EventHandler TerrainTypeWasSet;
-        public event HexEvent MapsCentreCoordsFound;
         public event EventHandler WidthCorrected;
         public event EventHandler HeightCorrected;
         public event EventHandler CreationMapsAdmissible;
         public event EventHandler CreationMapsInadmissible;
-        public event EventHandler IlluminateTargetHex;
-        public event EventHandler IlluminateCurrentHex;
-        public event EventHandler SkipTargetHexIllumination;
-        public event EventHandler SkipCurrentHexIllumination;
+
+        public delegate void HexEvent(HexEventArgs e);
+        public event HexEvent HexCreated;
+        public event HexEvent MapsCentreCoordsFound;
+        public event HexEvent IlluminateTargetHex;
+        public event HexEvent IlluminateCurrentHex;
+        public event HexEvent SkipTargetHexIllumination;
+        public event HexEvent SkipCurrentHexIllumination;
         public event HexEvent PaintHex;
+
+        public delegate void TextEvent(TextEventArgs text);
         public event TextEvent UpdateDistance;
 
-        private Vector3D ?_currentHex;
-        private Vector3D ?_targetHex;
+        private HexCoord ?_currentHex;
+        private HexCoord ?_targetHex;
 
-        private Dictionary<Vector3D, Hex> _hexMap;
+        private Dictionary<HexCoord, Hex> _hexMap;
 
         public void CreateHexMap()
         {
@@ -43,17 +45,18 @@ namespace Assets.MVC.Models
 
             if (_hexMap != null && DeleteHexMap != null) DeleteHexMap(this, EventArgs.Empty);
 
-            _hexMap = new Dictionary<Vector3D, Hex>();
+            _hexMap = new Dictionary<HexCoord, Hex>();
 
             for (var x = 0; x < MapWidthInHex; x++)
             {
                 for (var y = 0; y < MapHeightInHex; y++)
                 {
-                    var tempVector = new Vector3D(x, y, 0);
+                    var cubeCoord = new Point(x, y);
+                    var hexCoord = cubeCoord.ToHexCoord();
 
-                    _hexMap.Add(tempVector.ToHexCoord(), new Hex(CurrentTerrainType));
+                    _hexMap.Add(cubeCoord.ToHexCoord(), new Hex(CurrentTerrainType));
 
-                    if (HexCreated != null) HexCreated(new HexEventArgs(tempVector, CurrentTerrainType));
+                    if (HexCreated != null) HexCreated(new HexEventArgs(cubeCoord, hexCoord, CurrentTerrainType));
                 }
             }
             if (_hexMap.Count > 0)
@@ -73,7 +76,7 @@ namespace Assets.MVC.Models
 
         public void FindMapsCentreCoords()
         {
-            var centreCoord = new Vector3D(MapWidthInHex/2, MapHeightInHex/2, 0);
+            var centreCoord = new Point(MapWidthInHex/2, MapHeightInHex/2);
             if (MapsCentreCoordsFound != null) MapsCentreCoordsFound(new HexEventArgs(centreCoord));
         }
 
@@ -93,30 +96,33 @@ namespace Assets.MVC.Models
             CheckForMapCreationAvailable();
         }
 
-        public void SelectHex(Vector3D hexPosition)
+        public void SelectHex(HexCoord hexPosition)
         {
             if (_currentHex != hexPosition)
             {
                 if (_currentHex != null)
-                    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(this, EventArgs.Empty);
-                if (IlluminateCurrentHex != null) IlluminateCurrentHex(this, EventArgs.Empty);
-
-                ChangeTerrainType(hexPosition);
+                    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(new HexEventArgs(_currentHex.Value));
 
                 _currentHex = hexPosition;
-                
+
+                if (IlluminateCurrentHex != null) IlluminateCurrentHex(new HexEventArgs(_currentHex.Value));
+
+                if (UpdateDistance != null) UpdateDistance(new TextEventArgs(GenerateDistanceText()));
+
+                ChangeTerrainType(_currentHex.Value);       
             }
         }
 
-        public void HitHex(Vector3D hexPosition)
+        public void HitHex(HexCoord hexPosition)
         {
             if (_targetHex != hexPosition)
             {
                 if (_targetHex != null)
-                    if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, EventArgs.Empty);
+                    if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(new HexEventArgs(_targetHex.Value));
 
                 _targetHex = hexPosition;
-                if (IlluminateTargetHex != null) IlluminateTargetHex(this, EventArgs.Empty);
+
+                if (IlluminateTargetHex != null) IlluminateTargetHex(new HexEventArgs(_targetHex.Value));
 
                 if (_currentHex != null)
                 {                   
@@ -129,15 +135,15 @@ namespace Assets.MVC.Models
         public void NoHittedHex()
         {
             if (_targetHex != null)
-                if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, EventArgs.Empty);
+                if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(new HexEventArgs(_targetHex.Value));
             _targetHex = null;
         }
 
-        public void ChangeTerrainType(Vector3D hexPosition)
+        public void ChangeTerrainType(HexCoord hexPosition)
         {
             if (_hexMap[hexPosition].Type != CurrentTerrainType)
             {
-                if (PaintHex != null) PaintHex(new HexEventArgs(CurrentTerrainType));
+                if (PaintHex != null) PaintHex(new HexEventArgs(hexPosition, CurrentTerrainType));
                 _hexMap[hexPosition].Type = CurrentTerrainType;
             }
         }

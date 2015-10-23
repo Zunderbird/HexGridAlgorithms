@@ -30,8 +30,8 @@ namespace Assets.MVC.Controllers
             _mainGui.HexMap.GetComponent<MouseActionsCatcher>().NoHexHitted += (sender, args) => _model.NoHittedHex();
 
             //Models
-            _model.HexCreated += (args) => _mainGui.OnHexCreated(args.HexCoord, args.HexType);
-            _model.MapsCentreCoordsFound += (args) => _mainGui.OnMapsCentreCoordsFound(args.HexCoord);
+            _model.HexCreated += (args) => _mainGui.OnHexCreated(args.CubeCoord, args.HexCoord, args.HexType);
+            _model.MapsCentreCoordsFound += (args) => _mainGui.OnMapsCentreCoordsFound(args.CubeCoord);
 
             _model.TerrainTypeWasSet += (sender, args) => _mainGui.OnTerrainTypeWasSet(_model.CurrentTerrainType);
             _model.WidthCorrected += (sender, args) => _mainGui.OnWidthCorrected(_model.MapWidthInHex);
@@ -42,12 +42,12 @@ namespace Assets.MVC.Controllers
             _model.CreationMapsAdmissible += (sender, args) => _mainGui.OnCreationMapsAdmissible(true);
             _model.CreationMapsInadmissible += (sender, args) => _mainGui.OnCreationMapsAdmissible(false);
 
-            _model.IlluminateCurrentHex += (sender, args) => _mainGui.OnIlluminateCurrentHex();
-            _model.IlluminateTargetHex += (sender, args) => _mainGui.OnIlluminateTargerHex();
-            _model.SkipTargetHexIllumination += (sender, args) => _mainGui.OnSkipTargetHexIllumination();
-            _model.SkipCurrentHexIllumination += (sender, args) => _mainGui.OnSkipCurrentHexIllumination();
+            _model.IlluminateCurrentHex += (args) => _mainGui.OnIlluminateCurrentHex(args.HexCoord);
+            _model.IlluminateTargetHex += (args) => _mainGui.OnIlluminateTargerHex(args.HexCoord);
+            _model.SkipTargetHexIllumination += (args) => _mainGui.OnSkipTargetHexIllumination(args.HexCoord);
+            _model.SkipCurrentHexIllumination += (args) => _mainGui.OnSkipCurrentHexIllumination(args.HexCoord);
 
-            _model.PaintHex += args => _mainGui.OnPaintHex(args.HexType);
+            _model.PaintHex += args => _mainGui.OnPaintHex(args.HexCoord, args.HexType);
             _model.UpdateDistance += (args) => _mainGui.OnUpdateDistance(args.Text);
         }
     }

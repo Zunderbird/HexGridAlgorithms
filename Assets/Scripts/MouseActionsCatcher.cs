@@ -28,9 +28,9 @@ namespace Assets.Scripts
                     CurrentHex = hit.transform;
 
                     if (Input.GetMouseButton(0))
-                        if (HexSelected != null) HexSelected(GetEventArg(hit));
+                        if (HexSelected != null) HexSelected(new HexEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
 
-                    if (HexHitted != null) HexHitted(GetEventArg(hit));
+                    if (HexHitted != null) HexHitted(new HexEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
 
                 }
                 else if (CurrentHex)
@@ -39,11 +39,6 @@ namespace Assets.Scripts
                     if (NoHexHitted != null) NoHexHitted(this, EventArgs.Empty);
                 }
             }
-        }
-
-        private HexEventArgs GetEventArg(RaycastHit hit)
-        {
-            return new HexEventArgs(CurrentHex.GetComponent<HexData>().HexPosition.ToVector3D());
         }
     }
 }

@@ -79,26 +79,24 @@ namespace Assets.HexGridAlgorithms
             return hex;
         }
 
-        public static void SetHexInfo(int x, int y, Transform hex)
+        public static void SetHexInfo(HexCoord coord, Transform hex)
         {
-            var newX = Mathf.CeilToInt(x - (y / 2));
-            var newZ = -(newX + y);
-
-            hex.GetComponent<HexData>().HexPosition = new Vector3(newX, y, newZ);
-            hex.name = ("(" + newX + ", " + y + ", " + newZ + ")");
+            hex.GetComponent<HexData>().HexPosition = coord;
+            hex.name = coord.ToString();
         }
 
-        public static Vector3 CorrelateCoordWithMap(Vector3D hexCoord)
+        public static Vector3 CorrelateCoordWithMap(Point hexCoord)
         {
             return CorrelateCoordWithMap(hexCoord, new Vector3(0, 0));
         }
 
-        public static Vector3 CorrelateCoordWithMap(Vector3D hexCoord, Vector3 previousCoord)
+        public static Vector3 CorrelateCoordWithMap(Point hexCoord, Vector3 previousCoord)
         {
-            var posY = hexCoord.Y * (HexSize.y * DistanceBetweenHex.y);
             var posX = hexCoord.X * (HexSize.x * DistanceBetweenHex.x);
+            var posY = hexCoord.Y * (HexSize.y * DistanceBetweenHex.y);
+            
+            posX += (hexCoord.Y % 2 == 0) ? 0 : HexSize.x;
 
-            posX += (hexCoord.Y % 2 == 0) ? HexSize.x : 0;
             return new Vector3(posX, posY) + previousCoord;
         }
 

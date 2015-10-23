@@ -1,25 +1,15 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Assets.HexGridAlgorithms
 {
     public static class ExtensionsMethods
     {
-        public static Vector3D ToVector3D(this Vector3 vector)
+        public static HexCoord ToHexCoord(this Point coord)
         {
-            return new Vector3D((int)vector.x, (int)vector.y, (int)vector.z);
-        }
-
-        public static Vector3 ToVector3(this Vector3D vector)
-        {
-            return new Vector3(vector.X, vector.Y, vector.Z);
-        }
-
-        public static Vector3D ToHexCoord(this Vector3D vector)
-        {
-            var newX = (int)Math.Ceiling(vector.X - ((double)vector.Y / 2));
-            var newZ = -(newX + vector.Y);
-            return new Vector3D(newX, vector.Y, newZ);
+            var q = (int)Math.Ceiling(coord.X - ((double)coord.Y / 2));
+            var r = coord.Y;
+            var s = -(q + coord.Y);
+            return new HexCoord(q, r, s);
         }
 
         public static bool IsDigit(this char arg)
