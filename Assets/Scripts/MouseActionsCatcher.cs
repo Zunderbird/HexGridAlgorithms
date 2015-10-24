@@ -14,6 +14,7 @@ namespace Assets.Scripts
         public event HexEvent HexSelected;
         public event HexEvent HexHitted;
         public event EventHandler NoHexHitted;
+        public event EventHandler NoHexSelected;
 
         private void Update()
         {
@@ -37,6 +38,10 @@ namespace Assets.Scripts
                 {
                     CurrentHex = null;
                     if (NoHexHitted != null) NoHexHitted(this, EventArgs.Empty);
+                }
+                else if (Input.GetMouseButton(0))
+                {
+                    if (NoHexSelected != null) NoHexSelected(this, EventArgs.Empty);
                 }
             }
         }

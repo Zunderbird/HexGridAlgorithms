@@ -21,13 +21,15 @@ namespace Assets.MVC.Controllers
             _mainGui.CreateHexMapButton.onClick.AddListener(_model.CreateHexMap);
             _mainGui.TerrainTypeButton.onClick.AddListener(_model.SetNextTerrainType);
             _mainGui.CentreMapButton.onClick.AddListener(_model.FindMapsCentreCoords);
+            _mainGui.SaveButton.onClick.AddListener(_model.SaveMap);
 
             _mainGui.MapWidthInputField.onValueChange.AddListener(_model.SetWidthInHex);
             _mainGui.MapHeightInputField.onValueChange.AddListener(_model.SetHeightInHex);
 
             _mainGui.HexMap.GetComponent<MouseActionsCatcher>().HexSelected += (args) => _model.SelectHex(args.HexCoord);
             _mainGui.HexMap.GetComponent<MouseActionsCatcher>().HexHitted += (args) => _model.HitHex(args.HexCoord);
-            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().NoHexHitted += (sender, args) => _model.NoHittedHex();
+            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().NoHexHitted += (sender, args) => _model.SkipHittedHex();
+            _mainGui.HexMap.GetComponent<MouseActionsCatcher>().NoHexSelected += (sender, args) => _model.SkipSelectedHex();
 
             //Models
             _model.HexCreated += (args) => _mainGui.OnHexCreated(args.CubeCoord, args.HexCoord, args.HexType);

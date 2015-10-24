@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.HexGridAlgorithms;
+using SimpleJSON;
 
 namespace Assets.MVC.Models
 {
@@ -132,11 +133,18 @@ namespace Assets.MVC.Models
             }
         }
 
-        public void NoHittedHex()
+        public void SkipHittedHex()
         {
             if (_targetHex != null)
                 if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(new HexEventArgs(_targetHex.Value));
             _targetHex = null;
+        }
+
+        public void SkipSelectedHex()
+        {
+            if (_currentHex != null)
+                if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(new HexEventArgs(_currentHex.Value));
+            _currentHex = null;
         }
 
         public void ChangeTerrainType(HexCoord hexPosition)
@@ -159,10 +167,20 @@ namespace Assets.MVC.Models
 
         private string GenerateDistanceText()
         {
-            var moveDistance = HexAlgorithms.CalculateDistance(_currentHex.Value, _targetHex.Value);
+            if (_currentHex != null && _targetHex != null)
+            {
+                var moveDistance = HexAlgorithms.CalculateDistance(_currentHex.Value, _targetHex.Value);
 
-            return "Current Hex : " + _currentHex + "\nTarget Hex : "
-                + _targetHex + "\nDistance : " + moveDistance;
+                return "Current Hex : " + _currentHex + "\nTarget Hex : "
+                       + _targetHex + "\nDistance : " + moveDistance;
+            }
+            return "Current Hex :\nTarget Hex :\nDistance : ";
+        }
+
+        public void SaveMap()
+        {
+
+            System.IO.File.WriteAllText(@"Assets/HexMap.json","123");
         }
     }
 }
