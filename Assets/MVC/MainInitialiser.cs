@@ -6,14 +6,14 @@ namespace Assets.MVC
 {
     public class MainInitialiser : MonoBehaviour
     {
-
-        Controller _controller;
+        
+        MapsGenController _mapsGenController;
 
         void Start()
         {
             TerrainTextures.LoadTextures();
 
-            _controller = new Controller();
+            _mapsGenController = new MapsGenController();
         }
 
     }

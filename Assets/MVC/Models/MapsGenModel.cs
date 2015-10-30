@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Assets.HexGridAlgorithms;
-using SimpleJSON;
+using LitJson;
 
 namespace Assets.MVC.Models
 {
-    class Model 
+    class MapsGenModel 
     {
         public int MapWidthInHex { get; set; }
         public int MapHeightInHex { get; set; }
@@ -21,6 +22,7 @@ namespace Assets.MVC.Models
         public event EventHandler HeightCorrected;
         public event EventHandler CreationMapsAdmissible;
         public event EventHandler CreationMapsInadmissible;
+        public event EventHandler LoadingNextStage;
 
         public delegate void HexEvent(HexEventArgs e);
         public event HexEvent HexCreated;
@@ -101,12 +103,12 @@ namespace Assets.MVC.Models
         {
             if (_currentHex != hexPosition)
             {
-                if (_currentHex != null)
-                    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(new HexEventArgs(_currentHex.Value));
+                //if (_currentHex != null)
+                //    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(new HexEventArgs(_currentHex.Value));
 
                 _currentHex = hexPosition;
 
-                if (IlluminateCurrentHex != null) IlluminateCurrentHex(new HexEventArgs(_currentHex.Value));
+                //if (IlluminateCurrentHex != null) IlluminateCurrentHex(new HexEventArgs(_currentHex.Value));
 
                 if (UpdateDistance != null) UpdateDistance(new TextEventArgs(GenerateDistanceText()));
 
@@ -179,8 +181,18 @@ namespace Assets.MVC.Models
 
         public void SaveMap()
         {
+            using (var sw = new StreamWriter(@"Assets/HexMap.json"))
+            {
+                foreach (var hex in _hexMap)
+                {
+                    sw.WriteLine(JsonMapper.ToJson(hex));
+                }
+            }
+        }
 
-            System.IO.File.WriteAllText(@"Assets/HexMap.json","123");
+        public void NextStage()
+        {
+            if (LoadingNextStage != null) LoadingNextStage(this, EventArgs.Empty);
         }
     }
 }

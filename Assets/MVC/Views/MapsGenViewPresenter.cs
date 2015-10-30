@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Assets.MVC.Views
 {
-    class MainGuiViewPresenter : MonoBehaviour
+    class MapsGenViewPresenter : MonoBehaviour
     {
         public Canvas FullScreenCanvas;
         public Canvas MedievalScreenCanvas;    
@@ -15,6 +15,7 @@ namespace Assets.MVC.Views
         public Button CentreMapButton;
         public Button FullScreenButton;
         public Button SaveButton;
+        public Button NextButton;
         public InputField MapWidthInputField;
         public InputField MapHeightInputField;
         public Text DistanceText;
@@ -34,6 +35,7 @@ namespace Assets.MVC.Views
             CreateHexMapButton.interactable = false;
             CentreMapButton.interactable = false;
             SaveButton.interactable = false;
+            NextButton.interactable = false;
 
             FullScreenButton.onClick.AddListener(ChangeGameWindow);
             ScaleMapSlider.onValueChanged.AddListener(ScaleCameraSize);
@@ -107,7 +109,7 @@ namespace Assets.MVC.Views
 
         public void OnDeleteHexMap()
         {
-            for (int i = 0; i < HexMap.transform.childCount; i++)
+            for (var i = 0; i < HexMap.transform.childCount; i++)
             {
                 Destroy(HexMap.transform.GetChild(i).gameObject);
             }
@@ -118,6 +120,7 @@ namespace Assets.MVC.Views
             CentreMapButton.GetComponent<Button>().interactable = true;
             CentreMapButton.onClick.Invoke();
             SaveButton.interactable = true;
+            NextButton.interactable = true;
         }
 
         public void OnCreationMapsAdmissible(bool mapCreationAvailable)
@@ -155,6 +158,11 @@ namespace Assets.MVC.Views
             DistanceText.text = text;
         }
 
+        public void OnLoadingNextStage()
+        {
+            Application.LoadLevel("Scene_02");
+        }
+
         private void CentreTheMap(Point cubeCoord)
         {
             MapsCamera.transform.position = HexGenerator.CorrelateCoordWithMap(cubeCoord, new Vector3(0, 0, MapsCamera.transform.position.z));
@@ -163,7 +171,8 @@ namespace Assets.MVC.Views
 
         private Vector3 CorrelateWithCanvas()
         {
-            return (FullScreenCanvas.transform.position - _currentCanvas.transform.position) * MapsCamera.nearClipPlane * MapsCamera.orthographicSize / 100;
+            var correction = (FullScreenCanvas.transform.position - _currentCanvas.transform.position) * MapsCamera.nearClipPlane * MapsCamera.orthographicSize/100;
+            return correction;
         }
     }
 }

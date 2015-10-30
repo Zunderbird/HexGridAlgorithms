@@ -3,8 +3,6 @@ namespace Assets.HexGridAlgorithms
 {
     public struct HexCoord
     {
-        public static readonly HexCoord Empty = new HexCoord();
-
         public int Q { get; set; }
         public int R { get; set; }
         public int S { get; set; }
@@ -21,16 +19,6 @@ namespace Assets.HexGridAlgorithms
             Q = previousHexCoord.Q;
             R = previousHexCoord.R;
             S = previousHexCoord.S;
-        }
-
-        public bool IsEmpty
-        {
-            get
-            {
-                return Q == 0
-                    && R == 0
-                    && S == 0;
-            }
         }
 
         public void Offset(int dq, int dr, int ds)
@@ -103,7 +91,7 @@ namespace Assets.HexGridAlgorithms
 
         public override string ToString()
         {
-            return "(" + Q + ", " + R + ", " + S + ")";
+            return "[" + Q + ", " + R + ", " + S + "]";
         }
     }
 }
