@@ -4,7 +4,7 @@ using Assets.MVC.Controllers;
 
 namespace Assets.MVC
 {
-    public class MainInitialiser : MonoBehaviour
+    public class MapsGenInitializer : MonoBehaviour
     {
         
         MapsGenController _mapsGenController;

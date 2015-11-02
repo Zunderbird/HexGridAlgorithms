@@ -22,7 +22,7 @@ namespace Assets.MVC.Views
         public Slider ScaleMapSlider;        
         public Camera MapsCamera;
 
-        public GameObject HexMap { get; private set; }
+        public GameObject HexMap;// { get; private set; }
 
         private float _initScale;
         private Transform _currentCanvas;
@@ -46,8 +46,8 @@ namespace Assets.MVC.Views
 
             TerrainTypeButton.transform.GetChild(0).GetComponent<Text>().text = TerrainTypes.Plain.ToString();
 
-            HexMap = new GameObject("Hex Map");
-            HexMap.transform.parent = _currentCanvas;
+            //HexMap = new GameObject("Hex Map");
+            //HexMap.transform.parent = _currentCanvas;
             HexMap.AddComponent<ActionsOnlyInCanvas>();
             HexMap.AddComponent<CameraMove>().PlayerCamera = MapsCamera;
             HexMap.AddComponent<MouseActionsCatcher>().PlayerCamera = MapsCamera;

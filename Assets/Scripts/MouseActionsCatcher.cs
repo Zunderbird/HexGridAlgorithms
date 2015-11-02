@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using Assets.HexGridAlgorithms;
+using Assets.MVC.HexAlgorithmsEventArgs;
 
 namespace Assets.Scripts
 {
@@ -10,9 +10,9 @@ namespace Assets.Scripts
 
         public Transform CurrentHex { get; private set; }
 
-        public delegate void HexEvent(HexEventArgs e);
-        public event HexEvent HexSelected;
-        public event HexEvent HexHitted;
+        public delegate void HexCoordEvent(object sender, HexCoordEventArgs e);
+        public event HexCoordEvent HexSelected;
+        public event HexCoordEvent HexHitted;
         public event EventHandler NoHexHitted;
         public event EventHandler NoHexSelected;
 
@@ -29,9 +29,9 @@ namespace Assets.Scripts
                     CurrentHex = hit.transform;
 
                     if (Input.GetMouseButton(0))
-                        if (HexSelected != null) HexSelected(new HexEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
+                        if (HexSelected != null) HexSelected(this, new HexCoordEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
 
-                    if (HexHitted != null) HexHitted(new HexEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
+                    if (HexHitted != null) HexHitted(this, new HexCoordEventArgs(CurrentHex.GetComponent<HexData>().HexPosition));
 
                 }
                 else if (CurrentHex)
