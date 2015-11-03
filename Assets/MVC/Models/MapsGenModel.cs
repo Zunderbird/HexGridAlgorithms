@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Assets.HexGridAlgorithms;
 using Assets.MVC.HexAlgorithmsEventArgs;
 
-
 namespace Assets.MVC.Models
 {
     class MapsGenModel : BaseModel
@@ -21,17 +20,8 @@ namespace Assets.MVC.Models
         public delegate void HexEvent(object sender, HexEventArgs e);
         public event HexEvent HexCreated;
 
-        public delegate void HexCoordEvent(object sender, HexCoordEventArgs e);
-        public event HexCoordEvent IlluminateTargetHex;
-        public event HexCoordEvent IlluminateCurrentHex;
-        public event HexCoordEvent SkipTargetHexIllumination;
-        public event HexCoordEvent SkipCurrentHexIllumination;
-
         public delegate void TerrainEvent(object sender, TerrainEventArgs e);
         public event TerrainEvent PaintHex;
-
-        public delegate void TextEvent(TextEventArgs text);
-        public event TextEvent UpdateDistance;
 
         public const int MAX_SIZE_NUMBER = 300;
 
@@ -65,15 +55,15 @@ namespace Assets.MVC.Models
             if ((int)CurrentTerrainType + 1 >= Enum.GetNames(typeof(TerrainTypes)).Length)
                 CurrentTerrainType = 0;
             else
-            {
                 CurrentTerrainType++;
-            }
+
             if (TerrainTypeWasSet != null) TerrainTypeWasSet(this, EventArgs.Empty);;
         }
 
         public void SetWidthInHex(string arg)
         {
             MapWidthInHex = arg.ConvertToIntByLastSymbol(MAX_SIZE_NUMBER);
+
             if (WidthCorrected != null) WidthCorrected(this, EventArgs.Empty);
 
             CheckForMapCreationAvailable();
@@ -82,58 +72,45 @@ namespace Assets.MVC.Models
         public void SetHeightInHex(string arg)
         {
             MapHeightInHex = arg.ConvertToIntByLastSymbol(MAX_SIZE_NUMBER);
+
             if (HeightCorrected != null) HeightCorrected(this, EventArgs.Empty);
 
             CheckForMapCreationAvailable();
         }
 
-        public void SelectHex(HexCoord hexPosition)
+        public override void SelectHex(HexCoord hexPosition)
         {
-            if (CurrentHex != hexPosition)
-            {
-                //if (CurrentHex != null)
-                //    if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(new HexCoordEventArgs(CurrentHex.Value));
+            if (CurrentHex == hexPosition) return;
 
-                CurrentHex = hexPosition;
+            CurrentHex = hexPosition;
 
-                //if (IlluminateCurrentHex != null) IlluminateCurrentHex(new HexCoordEventArgs(CurrentHex.Value));
+            OnUpdateDistance();
 
-                if (UpdateDistance != null) UpdateDistance(new TextEventArgs(GenerateDistanceText()));
+            ChangeTerrainType(CurrentHex.Value);       
 
-                ChangeTerrainType(CurrentHex.Value);       
-            }
         }
 
-        public void HitHex(HexCoord hexPosition)
+        public override void HitHex(HexCoord hexPosition)
         {
-            if (TargetHex != hexPosition)
-            {
-                if (TargetHex != null)
-                    if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, new HexCoordEventArgs(TargetHex.Value));
+            if (TargetHex == hexPosition) return;
 
-                TargetHex = hexPosition;
+            OnSkipTargetHexIllumination(); 
 
-                if (IlluminateTargetHex != null) IlluminateTargetHex(this, new HexCoordEventArgs(TargetHex.Value));
+            TargetHex = hexPosition;
 
-                if (CurrentHex != null)
-                {                   
-                    if (UpdateDistance != null) UpdateDistance(new TextEventArgs(GenerateDistanceText()));
-                }
-
-            }
+            OnIlluminateTargetHex();
+    
+            OnUpdateDistance(); 
         }
 
-        public void SkipHittedHex()
+        public override void SkipHittedHex()
         {
-            if (TargetHex != null)
-                if (SkipTargetHexIllumination != null) SkipTargetHexIllumination(this, new HexCoordEventArgs(TargetHex.Value));
+            OnSkipTargetHexIllumination(); 
             TargetHex = null;
         }
 
-        public void SkipSelectedHex()
+        public override void SkipSelectedHex()
         {
-            if (CurrentHex != null)
-                if (SkipCurrentHexIllumination != null) SkipCurrentHexIllumination(this, new HexCoordEventArgs(CurrentHex.Value));
             CurrentHex = null;
         }
 
@@ -153,18 +130,6 @@ namespace Assets.MVC.Models
                 if (CreationMapsAdmissible != null) CreationMapsAdmissible(this, EventArgs.Empty);
             }
             else if (CreationMapsInadmissible != null) CreationMapsInadmissible(this, EventArgs.Empty);
-        }
-
-        private string GenerateDistanceText()
-        {
-            if (CurrentHex != null && TargetHex != null)
-            {
-                var moveDistance = HexAlgorithms.CalculateDistance(CurrentHex.Value, TargetHex.Value);
-
-                return "Current Hex : " + CurrentHex + "\nTarget Hex : "
-                       + TargetHex + "\nDistance : " + moveDistance;
-            }
-            return "Current Hex :\nTarget Hex :\nDistance : ";
         }
     }
 }

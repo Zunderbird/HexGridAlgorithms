@@ -51,7 +51,7 @@ namespace Assets.MVC.Controllers
             _mapsGenModel.SkipCurrentHexIllumination += (sender, args) => _mapsGenGui.OnSkipCurrentHexIllumination(args.HexCoord);
 
             _mapsGenModel.PaintHex += (sender, args) => _mapsGenGui.OnPaintHex(args.HexCoord, args.HexType);
-            _mapsGenModel.UpdateDistance += (args) => _mapsGenGui.OnUpdateDistance(args.Text);
+            _mapsGenModel.UpdateDistance += (sender, args) => _mapsGenGui.OnUpdateDistance(args.Text);
 
             _mapsGenModel.LoadingNextStage += (sender, args) => _mapsGenGui.OnLoadingNextStage();
         }

@@ -11,8 +11,6 @@ namespace Assets.MVC
 
         void Start()
         {
-            TerrainTextures.LoadTextures();
-
             _hexAlgoController = new HexAlgoController();
         }
 

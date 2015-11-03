@@ -26,16 +26,15 @@ namespace Assets.HexGridAlgorithms
         {
             var number = 0;
 
-            if (arg.Length > 0)
-            {
-                var lastSymbol = arg[arg.Length - 1];
+            if (arg.Length <= 0) return number;
 
-                if (!lastSymbol.IsDigit() || Convert.ToInt32(arg) > maxSizeNumber)
-                {
-                    arg = arg.Remove(arg.Length - 1);
-                }
-                number = (arg.Length > 0) ? Convert.ToInt32(arg) : 0;
-            }
+            var lastSymbol = arg[arg.Length - 1];
+
+            if (!lastSymbol.IsDigit() || Convert.ToInt32(arg) > maxSizeNumber)
+                arg = arg.Remove(arg.Length - 1);
+
+            number = (arg.Length > 0) ? Convert.ToInt32(arg) : 0;
+
             return number;
         }
     }
