@@ -4,11 +4,6 @@ namespace Assets.MVC.Models
 {
     public class HexAlgoModel : BaseModel
     {
-        public HexAlgoModel()
-        {
-            LoadMap();
-        }
-
         public override void SelectHex(HexCoord hexPosition)
         {
             if (CurrentHex == hexPosition) return;

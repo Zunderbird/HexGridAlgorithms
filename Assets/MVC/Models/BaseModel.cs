@@ -5,8 +5,6 @@ using Assets.MVC.HexAlgorithmsEventArgs;
 using System.IO;
 using Newtonsoft.Json;
 
-//using LitJson;
-
 namespace Assets.MVC.Models
 {
     public abstract class BaseModel
@@ -20,6 +18,10 @@ namespace Assets.MVC.Models
         protected HexCoord? TargetHex;
 
         public event EventHandler LoadingNextStage;
+        public event EventHandler MapLoaded;
+
+        public delegate void HexEvent(object sender, HexEventArgs e);
+        public event HexEvent HexCreated;
 
         public delegate void PointEvent(object sender, PointEventArgs e);
         public event PointEvent MapsCentreCoordsFound;
@@ -37,6 +39,12 @@ namespace Assets.MVC.Models
         public abstract void HitHex(HexCoord hexPosition);
         public abstract void SkipHittedHex();
         public abstract void SkipSelectedHex();
+
+        protected void OnMapLoaded()
+        {
+            var handler = MapLoaded;
+            if (handler != null && HexMap.Count > 0) handler(this, EventArgs.Empty);
+        }
 
         protected void OnIlluminateTargetHex()
         {
@@ -68,43 +76,32 @@ namespace Assets.MVC.Models
             if (handler != null) handler(this, new TextEventArgs(GenerateDistanceText()));
         }
 
-        public struct MyStruct
+        protected void OnHexCreated(Point point, HexCoord hexCoord, TerrainTypes terrainType)
         {
-             
+            var handler = HexCreated;
+            if (handler != null) handler(this, new HexEventArgs(point, hexCoord, terrainType));
         }
 
         public virtual void SaveMap()
         {
-            var dict = new Dictionary<Hex, Hex>
-            {
-                { new Hex(TerrainTypes.Forest), new Hex(TerrainTypes.Forest)},
-                { new Hex(TerrainTypes.Lake), new Hex(TerrainTypes.Lake)},
-                { new Hex(TerrainTypes.Hill), new Hex(TerrainTypes.Hill)}
-            };
-            File.WriteAllText(@"Assets/HexMap.json", JsonConvert.SerializeObject(dict));
-            //var dict = new Dictionary<string, Hex>();
-
-            //foreach (var hex in HexMap)
-            //{
-            //    dict.Add(hex.Key.ToString(), hex.Value);
-            //}
-
-            //File.WriteAllText(@"Assets/HexMap.json", JsonMapper.ToJson(dict));
+            File.WriteAllText(@"Assets/HexMap.json", JsonConvert.SerializeObject(HexMap));
         }
 
         public virtual void LoadMap()
         {
             var text = File.ReadAllText(@"Assets/HexMap.json");
 
-            var dict = JsonConvert.DeserializeObject<Dictionary<Hex, Hex>>(text);
-            //var dict = JsonMapper.ToObject<Dictionary<string, Hex>>(text);
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, Hex>>(text);
+
+            HexMap = new Dictionary<HexCoord, Hex>();
 
             foreach (var record in dict)
             {
-                UnityEngine.Debug.Log(record.Key + ": " + record.Value.Type);
+                var hexCoord = JsonConvert.DeserializeObject<HexCoord>(record.Key);
+                HexMap.Add(hexCoord, record.Value);
+                OnHexCreated(hexCoord.ToHexCoord(), hexCoord, record.Value.Type);
             }
-            //HexMap = new Dictionary<HexCoord, Hex>();
-            //var hexMap = JsonMapper.ToObject<Dictionary<HexCoord, Hex>>(text);
+            OnMapLoaded();
         }
 
         public void FindMapsCentreCoords()
@@ -124,6 +121,7 @@ namespace Assets.MVC.Models
 
         public virtual void NextStage()
         {
+            SaveMap();
             if (LoadingNextStage != null) LoadingNextStage(this, EventArgs.Empty);
         }
     }

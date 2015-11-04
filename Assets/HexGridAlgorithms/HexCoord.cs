@@ -1,4 +1,6 @@
 ﻿
+using Newtonsoft.Json;
+
 namespace Assets.HexGridAlgorithms
 {
     public struct HexCoord
@@ -30,8 +32,7 @@ namespace Assets.HexGridAlgorithms
 
         public static HexCoord operator +(HexCoord left, HexCoord right)
         {
-            return new HexCoord
-                (
+            return new HexCoord(
                 left.Q + right.Q,
                 left.R + right.R,
                 left.S + right.S);
@@ -39,8 +40,7 @@ namespace Assets.HexGridAlgorithms
 
         public static HexCoord operator -(HexCoord left, HexCoord right)
         {
-            return new HexCoord
-                (
+            return new HexCoord(
                 left.Q - right.Q,
                 left.R - right.R,
                 left.S - right.S);
@@ -91,7 +91,7 @@ namespace Assets.HexGridAlgorithms
 
         public override string ToString()
         {
-            return "[" + Q + ", " + R + ", " + S + "]";
+            return JsonConvert.SerializeObject(this);      
         }
     }
 }

@@ -12,6 +12,14 @@ namespace Assets.HexGridAlgorithms
             return new HexCoord(q, r, s);
         }
 
+        public static Point ToHexCoord(this HexCoord hexCoord)
+        {
+            var x = hexCoord.Q + hexCoord.R/2;
+            var y = hexCoord.R;
+           
+            return new Point(x, y);
+        }
+
         public static bool IsDigit(this char arg)
         {
             return ('0' <= arg && arg <= '9');

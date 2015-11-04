@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 namespace Assets.MVC.Views
 {
-    class MapsGenViewPresenter : MonoBehaviour
-    {
-        public Canvas FullScreenCanvas;
-        public Canvas MedievalScreenCanvas;    
+    class MapsGenViewPresenter : BaseViewPresenter
+    {     
         public GameObject Panel;
         public Button CreateHexMapButton;
         public Button TerrainTypeButton;
@@ -20,15 +18,8 @@ namespace Assets.MVC.Views
         public InputField MapHeightInputField;
         public Text DistanceText;
         public Slider ScaleMapSlider;        
-        public Camera MapsCamera;
-
-        public GameObject HexMap;// { get; private set; }
 
         private float _initScale;
-        private Transform _currentCanvas;
-
-        private readonly Color _targetHexColor = Color.gray / 2;
-        private readonly Color _currentHexColor = Color.cyan / 2;
 
         private void Start ()
         {
@@ -42,12 +33,12 @@ namespace Assets.MVC.Views
 
             _initScale = MapsCamera.orthographicSize;
 
-            _currentCanvas = MedievalScreenCanvas.transform;
+            CurrentCanvas = MedievalScreenCanvas.transform;
 
             TerrainTypeButton.transform.GetChild(0).GetComponent<Text>().text = TerrainTypes.Plain.ToString();
 
             //HexMap = new GameObject("Hex Map");
-            //HexMap.transform.parent = _currentCanvas;
+            //HexMap.transform.parent = CurrentCanvas;
             HexMap.AddComponent<ActionsOnlyInCanvas>();
             HexMap.AddComponent<CameraMove>().PlayerCamera = MapsCamera;
             HexMap.AddComponent<MouseActionsCatcher>().PlayerCamera = MapsCamera;
@@ -55,18 +46,18 @@ namespace Assets.MVC.Views
 
         public void ChangeGameWindow()
         {
-            if (_currentCanvas == FullScreenCanvas.transform)
+            if (CurrentCanvas == FullScreenCanvas.transform)
             {
-                _currentCanvas = MedievalScreenCanvas.transform;
+                CurrentCanvas = MedievalScreenCanvas.transform;
                 Panel.SetActive(true);
             }
             else
             {
-                _currentCanvas = FullScreenCanvas.transform;
+                CurrentCanvas = FullScreenCanvas.transform;
                 Panel.SetActive(false);
             }
 
-            HexMap.transform.parent = _currentCanvas;
+            HexMap.transform.parent = CurrentCanvas;
             HexMap.GetComponent<ActionsOnlyInCanvas>().InitComponents();
         }
 
@@ -76,25 +67,9 @@ namespace Assets.MVC.Views
             CentreMapButton.onClick.Invoke();
         }
 
-        public void OnHexCreated(Point cubeCoord, HexCoord hexCoord, TerrainTypes hexType)
-        {
-            var hex = HexGenerator.MakeHex().transform;
-
-            hex.GetComponent<Renderer>().material.mainTexture = TerrainTextures.GetTexture(hexType);
-            HexGenerator.SetHexInfo(hexCoord, hex);
-
-            hex.position = HexGenerator.CorrelateCoordWithMap(cubeCoord);
-            hex.parent = HexMap.transform;
-        }
-
         public void OnTerrainTypeWasSet(TerrainTypes terrainType)
         {
             TerrainTypeButton.transform.GetChild(0).GetComponent<Text>().text = terrainType.ToString();
-        }
-
-        public void OnMapsCentreCoordsFound(Point cubeCoord)
-        {
-            CentreTheMap(cubeCoord);
         }
 
         public void OnWidthCorrected(int width)
@@ -115,7 +90,7 @@ namespace Assets.MVC.Views
             }
         }
 
-        public void OnMapCreated()
+        public override void OnMapLoaded()
         {
             CentreMapButton.GetComponent<Button>().interactable = true;
             CentreMapButton.onClick.Invoke();
@@ -126,26 +101,6 @@ namespace Assets.MVC.Views
         public void OnCreationMapsAdmissible(bool mapCreationAvailable)
         {
             CreateHexMapButton.GetComponent<Button>().interactable = mapCreationAvailable;
-        }
-
-        public void OnIlluminateCurrentHex(HexCoord hexCoord)
-        {
-            HexMap.transform.Find(hexCoord.ToString()).GetComponent<Renderer>().material.color += _currentHexColor;
-        }
-
-        public void OnIlluminateTargerHex(HexCoord hexCoord)
-        {
-            HexMap.transform.Find(hexCoord.ToString()).GetComponent<Renderer>().material.color += _targetHexColor;
-        }
-
-        public void OnSkipTargetHexIllumination(HexCoord hexCoord)
-        {
-            HexMap.transform.Find(hexCoord.ToString()).GetComponent<Renderer>().material.color -= _targetHexColor;
-        }
-
-        public void OnSkipCurrentHexIllumination(HexCoord hexCoord)
-        {
-            HexMap.transform.Find(hexCoord.ToString()).GetComponent<Renderer>().material.color -= _currentHexColor;
         }
 
         public void OnPaintHex(HexCoord hexCoord, TerrainTypes terrainType)
@@ -161,18 +116,6 @@ namespace Assets.MVC.Views
         public void OnLoadingNextStage()
         {
             Application.LoadLevel("Scene_02");
-        }
-
-        private void CentreTheMap(Point cubeCoord)
-        {
-            MapsCamera.transform.position = HexGenerator.CorrelateCoordWithMap(cubeCoord, new Vector3(0, 0, MapsCamera.transform.position.z));
-            MapsCamera.transform.position += CorrelateWithCanvas();
-        }
-
-        private Vector3 CorrelateWithCanvas()
-        {
-            var correction = (FullScreenCanvas.transform.position - _currentCanvas.transform.position) * MapsCamera.nearClipPlane * MapsCamera.orthographicSize/100;
-            return correction;
-        }
+        } 
     }
 }

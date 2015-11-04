@@ -5,6 +5,8 @@ namespace Assets.HexGridAlgorithms
 {
     static class TerrainTextures
     {
+        public static bool IsTexturesLoaded { get; private set; }
+
         private static readonly Dictionary<TerrainTypes, string> _textureNames = new Dictionary<TerrainTypes, string>
         {
             {TerrainTypes.Plain, "01_Plain_Texture"},
@@ -23,6 +25,7 @@ namespace Assets.HexGridAlgorithms
                 var texture = (Texture2D)Resources.Load(textureName.Value);
                 _textures.Add(textureName.Key, texture);
             }
+            IsTexturesLoaded = true;
         }
 
         public static Texture2D GetTexture(TerrainTypes terrainType)

@@ -15,10 +15,6 @@ namespace Assets.MVC.Models
         public event EventHandler CreationMapsAdmissible;
         public event EventHandler CreationMapsInadmissible;
         public event EventHandler DeleteHexMap;
-        public event EventHandler MapCreated;
-
-        public delegate void HexEvent(object sender, HexEventArgs e);
-        public event HexEvent HexCreated;
 
         public delegate void TerrainEvent(object sender, TerrainEventArgs e);
         public event TerrainEvent PaintHex;
@@ -43,11 +39,10 @@ namespace Assets.MVC.Models
 
                     HexMap.Add(cubeCoord.ToHexCoord(), new Hex(CurrentTerrainType));
 
-                    if (HexCreated != null) HexCreated(this, new HexEventArgs(cubeCoord, hexCoord, CurrentTerrainType));
+                    OnHexCreated(cubeCoord, hexCoord, CurrentTerrainType); 
                 }
             }
-            if (HexMap.Count > 0)
-                if (MapCreated != null) MapCreated(this, EventArgs.Empty);
+            OnMapLoaded(); 
         }
 
         public void SetNextTerrainType()

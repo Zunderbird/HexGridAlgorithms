@@ -41,7 +41,7 @@ namespace Assets.MVC.Controllers
             _mapsGenModel.HeightCorrected += (sender, args) => _mapsGenGui.OnHeightCorrected(_mapsGenModel.MapHeightInHex);
 
             _mapsGenModel.DeleteHexMap += (sender, args) => _mapsGenGui.OnDeleteHexMap();
-            _mapsGenModel.MapCreated += (sender, args) => _mapsGenGui.OnMapCreated();
+            _mapsGenModel.MapLoaded += (sender, args) => _mapsGenGui.OnMapLoaded();
             _mapsGenModel.CreationMapsAdmissible += (sender, args) => _mapsGenGui.OnCreationMapsAdmissible(true);
             _mapsGenModel.CreationMapsInadmissible += (sender, args) => _mapsGenGui.OnCreationMapsAdmissible(false);
 
