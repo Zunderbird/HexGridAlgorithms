@@ -1,5 +1,5 @@
-﻿using Assets.HexGridAlgorithms;
-using Assets.Scripts;
+﻿using System;
+using Assets.HexGridAlgorithms;
 using UnityEngine;
 
 namespace Assets.MVC.Views
@@ -10,17 +10,24 @@ namespace Assets.MVC.Views
         public GameObject HexMap;
 
         public Canvas FullScreenCanvas;
-        public Canvas MedievalScreenCanvas;
+        public Canvas InternalScreenCanvas;
 
         protected Transform CurrentCanvas;
 
         private readonly Color _targetHexColor = Color.gray / 2;
         private readonly Color _currentHexColor = Color.cyan / 2;
 
+        public event EventHandler Initialized;
+
         public virtual void OnMapLoaded()
         {
         }
 
+        protected void OnInitialized()
+        {
+            var handler = Initialized;
+            if (handler != null) handler(this, EventArgs.Empty);
+        }
 
         public void OnHexCreated(Point cubeCoord, HexCoord hexCoord, TerrainTypes hexType)
         {

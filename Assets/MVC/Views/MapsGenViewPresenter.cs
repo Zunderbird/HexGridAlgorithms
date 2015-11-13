@@ -33,7 +33,7 @@ namespace Assets.MVC.Views
 
             _initScale = MapsCamera.orthographicSize;
 
-            CurrentCanvas = MedievalScreenCanvas.transform;
+            CurrentCanvas = InternalScreenCanvas.transform;
 
             TerrainTypeButton.transform.GetChild(0).GetComponent<Text>().text = TerrainTypes.Plain.ToString();
 
@@ -48,7 +48,7 @@ namespace Assets.MVC.Views
         {
             if (CurrentCanvas == FullScreenCanvas.transform)
             {
-                CurrentCanvas = MedievalScreenCanvas.transform;
+                CurrentCanvas = InternalScreenCanvas.transform;
                 Panel.SetActive(true);
             }
             else

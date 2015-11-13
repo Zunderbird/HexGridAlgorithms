@@ -1502,8 +1502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55bd8a708d3f2ea4cb4e68c072d36b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MapsCamera: {fileID: 520483340}
+  HexMap: {fileID: 582615}
   FullScreenCanvas: {fileID: 1048978313}
-  MedievalScreenCanvas: {fileID: 520051472}
+  InternalScreenCanvas: {fileID: 520051472}
   Panel: {fileID: 1622290858}
   CreateHexMapButton: {fileID: 1926600624}
   TerrainTypeButton: {fileID: 901329799}
@@ -1515,8 +1517,6 @@ MonoBehaviour:
   MapHeightInputField: {fileID: 106265005}
   DistanceText: {fileID: 358027255}
   ScaleMapSlider: {fileID: 1470764605}
-  MapsCamera: {fileID: 520483340}
-  HexMap: {fileID: 582615}
 --- !u!4 &893004227
 Transform:
   m_ObjectHideFlags: 0

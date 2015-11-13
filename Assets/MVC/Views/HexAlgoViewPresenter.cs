@@ -7,10 +7,12 @@ namespace Assets.MVC.Views
     {
         private void Start()
         {
-            CurrentCanvas = MedievalScreenCanvas.transform;
+            CurrentCanvas = InternalScreenCanvas.transform;
             HexMap.AddComponent<ActionsOnlyInCanvas>();
             HexMap.AddComponent<CameraMove>().PlayerCamera = MapsCamera;
             HexMap.AddComponent<MouseActionsCatcher>().PlayerCamera = MapsCamera;
+
+            OnInitialized();
         }
     }
 }

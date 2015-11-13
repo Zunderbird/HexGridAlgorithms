@@ -1399,4 +1399,4 @@ MonoBehaviour:
   MapsCamera: {fileID: 1015612411}
   HexMap: {fileID: 938098517}
   FullScreenCanvas: {fileID: 364116806}
-  MedievalScreenCanvas: {fileID: 867466202}
+  InternalScreenCanvas: {fileID: 867466202}
