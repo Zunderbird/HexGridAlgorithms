@@ -1,5 +1,7 @@
 ﻿using System;
 using Assets.HexGridAlgorithms;
+using Assets.MVC.HexAlgorithmsEventArgs;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.MVC.Views
@@ -19,8 +21,20 @@ namespace Assets.MVC.Views
 
         public event EventHandler Initialized;
 
+        public delegate void TextEvent(object sender, TextEventArgs args);
+        public event TextEvent SaveMapDialog;
+        public event TextEvent LoadMapDialog;
+
         public virtual void OnMapLoaded()
         {
+        }
+
+        public void OnDeleteHexMap()
+        {
+            for (var i = 0; i < HexMap.transform.childCount; i++)
+            {
+                Destroy(HexMap.transform.GetChild(i).gameObject);
+            }
         }
 
         protected void OnInitialized()
@@ -63,6 +77,18 @@ namespace Assets.MVC.Views
         public void OnMapsCentreCoordsFound(Point cubeCoord)
         {
             CentreTheMap(cubeCoord);
+        }
+
+        public void SaveDialog()
+        {
+            var path = EditorUtility.SaveFilePanel("Save map as JSON", "Assets/HexMaps", "NewMap.json", "json");
+            if (SaveMapDialog != null && path != string.Empty) SaveMapDialog(this, new TextEventArgs(path));
+        }
+
+        public void LoadDialog()
+        {
+            var path = EditorUtility.OpenFilePanel("Load map", "Assets/HexMaps", "json");
+            if (LoadMapDialog != null && path != string.Empty) LoadMapDialog(this, new TextEventArgs(path));
         }
 
         protected void CentreTheMap(Point cubeCoord)

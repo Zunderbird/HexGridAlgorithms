@@ -14,7 +14,6 @@ namespace Assets.MVC.Models
         public event EventHandler HeightCorrected;
         public event EventHandler CreationMapsAdmissible;
         public event EventHandler CreationMapsInadmissible;
-        public event EventHandler DeleteHexMap;
 
         public delegate void TerrainEvent(object sender, TerrainEventArgs e);
         public event TerrainEvent PaintHex;
@@ -26,7 +25,7 @@ namespace Assets.MVC.Models
             CurrentHex = null;
             TargetHex = null;
 
-            if (HexMap != null && DeleteHexMap != null) DeleteHexMap(this, EventArgs.Empty);
+            if (HexMap != null) OnDeleteHexMap();
 
             HexMap = new Dictionary<HexCoord, Hex>();
 

@@ -19,13 +19,18 @@ namespace Assets.MVC.Controllers
         {
             base.Start();
 
-            //View's events:
-            //View's buttons
+            //View's events
+
+            _mapsGenGui.SaveMapDialog += (sender, args) => _mapsGenModel.SaveMap(args.Text);
+            _mapsGenGui.LoadMapDialog += (sender, args) => _mapsGenModel.LoadMap(args.Text);
+
+            //View's buttons' events
 
             _mapsGenGui.CreateHexMapButton.onClick.AddListener(_mapsGenModel.CreateHexMap);
             _mapsGenGui.TerrainTypeButton.onClick.AddListener(_mapsGenModel.SetNextTerrainType);
             _mapsGenGui.CentreMapButton.onClick.AddListener(_mapsGenModel.FindMapsCentreCoords);
-            _mapsGenGui.SaveButton.onClick.AddListener(_mapsGenModel.SaveMap);
+            _mapsGenGui.SaveButton.onClick.AddListener(_mapsGenGui.SaveDialog);
+            _mapsGenGui.LoadHexMapButton.onClick.AddListener(_mapsGenGui.LoadDialog);
             _mapsGenGui.NextButton.onClick.AddListener(_mapsGenModel.NextStage);
 
             //View's Input fields
@@ -39,7 +44,6 @@ namespace Assets.MVC.Controllers
             _mapsGenModel.WidthCorrected += (sender, args) => _mapsGenGui.OnWidthCorrected(_mapsGenModel.MapWidthInHex);
             _mapsGenModel.HeightCorrected += (sender, args) => _mapsGenGui.OnHeightCorrected(_mapsGenModel.MapHeightInHex);
 
-            _mapsGenModel.DeleteHexMap += (sender, args) => _mapsGenGui.OnDeleteHexMap();
             _mapsGenModel.CreationMapsAdmissible += (sender, args) => _mapsGenGui.OnCreationMapsAdmissible(true);
             _mapsGenModel.CreationMapsInadmissible += (sender, args) => _mapsGenGui.OnCreationMapsAdmissible(false);
 

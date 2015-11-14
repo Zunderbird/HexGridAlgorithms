@@ -19,6 +19,7 @@ namespace Assets.MVC.Models
 
         public event EventHandler LoadingNextStage;
         public event EventHandler MapLoaded;
+        public event EventHandler DeleteHexMap;
 
         public delegate void HexEvent(object sender, HexEventArgs e);
         public event HexEvent HexCreated;
@@ -43,6 +44,12 @@ namespace Assets.MVC.Models
         protected void OnMapLoaded()
         {
             var handler = MapLoaded;
+            if (handler != null && HexMap.Count > 0) handler(this, EventArgs.Empty);
+        }
+
+        protected void OnDeleteHexMap()
+        {
+            var handler = DeleteHexMap;
             if (handler != null && HexMap.Count > 0) handler(this, EventArgs.Empty);
         }
 
@@ -82,14 +89,20 @@ namespace Assets.MVC.Models
             if (handler != null) handler(this, new HexEventArgs(point, hexCoord, terrainType));
         }
 
-        public virtual void SaveMap()
+        public virtual void SaveMap(string path)
         {
-            File.WriteAllText(@"Assets/HexMap.json", JsonConvert.SerializeObject(HexMap));
+            File.WriteAllText(path, JsonConvert.SerializeObject(HexMap));
         }
 
-        public virtual void LoadMap()
+        public virtual void LoadMap(string path)
         {
-            var text = File.ReadAllText(@"Assets/HexMap.json");
+            CurrentHex = null;
+            TargetHex = null;
+            
+            if (HexMap != null) OnDeleteHexMap();
+            OnUpdateDistance();
+
+            var text = File.ReadAllText(path);
 
             var dict = JsonConvert.DeserializeObject<Dictionary<string, Hex>>(text);
 
@@ -121,7 +134,7 @@ namespace Assets.MVC.Models
 
         public virtual void NextStage()
         {
-            SaveMap();
+            SaveMap(@"Assets/HexMaps/HexMap.json");
             if (LoadingNextStage != null) LoadingNextStage(this, EventArgs.Empty);
         }
     }

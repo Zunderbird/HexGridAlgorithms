@@ -29,6 +29,7 @@ namespace Assets.MVC.Controllers
             Model.MapsCentreCoordsFound += (sender, args) => MainGui.OnMapsCentreCoordsFound(args.CubeCoord);
 
             Model.MapLoaded += (sender, args) => MainGui.OnMapLoaded();
+            Model.DeleteHexMap += (sender, args) => MainGui.OnDeleteHexMap();
 
             Model.IlluminateCurrentHex += (sender, args) => MainGui.OnIlluminateCurrentHex(args.HexCoord);
             Model.IlluminateTargetHex += (sender, args) => MainGui.OnIlluminateTargerHex(args.HexCoord);

@@ -9,6 +9,7 @@ namespace Assets.MVC.Views
     {     
         public GameObject Panel;
         public Button CreateHexMapButton;
+        public Button LoadHexMapButton;
         public Button TerrainTypeButton;
         public Button CentreMapButton;
         public Button FullScreenButton;
@@ -80,14 +81,6 @@ namespace Assets.MVC.Views
         public void OnHeightCorrected(int height)
         {
             MapHeightInputField.GetComponent<InputField>().text = height.ToString();
-        }
-
-        public void OnDeleteHexMap()
-        {
-            for (var i = 0; i < HexMap.transform.childCount; i++)
-            {
-                Destroy(HexMap.transform.GetChild(i).gameObject);
-            }
         }
 
         public override void OnMapLoaded()

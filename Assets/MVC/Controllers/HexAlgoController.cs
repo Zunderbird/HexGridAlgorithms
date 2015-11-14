@@ -17,7 +17,7 @@ namespace Assets.MVC.Controllers
         new public void Start()
         {
             base.Start();
-            Model.LoadMap();
+            Model.LoadMap(@"Assets/HexMaps/HexMap.json");
             Model.FindMapsCentreCoords();
         }
     }
